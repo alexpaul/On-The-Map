@@ -12,7 +12,9 @@ class OnTheMapClient {
     
     let session = NSURLSession.sharedSession()
     
-    func authenticateUser(#username: String, password: String) {
+    var sessionID: String? = nil
+    
+    func authenticateUser(#username: String, password: String, completionHandler:(success: Bool, result: AnyObject!, error: String?) -> Void) {
         let parameters = [String: AnyObject]()
         
         let url = "https://www.udacity.com/api/session"
@@ -35,13 +37,13 @@ class OnTheMapClient {
                 
                 if let result = jsonResult {
                     if let accountDictionary = result.valueForKey("account") as? NSDictionary {
-                        println(accountDictionary.valueForKey("registered")!)
                         if let sessionDictionary = result.valueForKey("session") as? NSDictionary {
-                            println(sessionDictionary.valueForKey("id")!)
-                            self.getStudentLocations()
+                            // Store the Session ID
+                            OnTheMapClient.sharedInstance().sessionID = sessionDictionary.valueForKey("id") as? String
+                            completionHandler(success: true, result: result, error: nil)
                         }
                     }else{
-                        println("Error - Account")
+                        completionHandler(success: false, result: nil, error: "Error with Login")
                     }
                 }else {
                     println("Error with JSON Result")

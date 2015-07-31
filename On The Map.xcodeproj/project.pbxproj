@@ -15,6 +15,8 @@
 		577EBA161B69B3C2003BD99D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 577EBA141B69B3C2003BD99D /* LaunchScreen.xib */; };
 		577EBA221B69B3C4003BD99D /* On_The_MapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA211B69B3C4003BD99D /* On_The_MapTests.swift */; };
 		577EBA2E1B6A361A003BD99D /* OnTheMapClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA2D1B6A361A003BD99D /* OnTheMapClient.swift */; };
+		577EBA341B6B1E98003BD99D /* ListLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA331B6B1E98003BD99D /* ListLocationsViewController.swift */; };
+		577EBA361B6B1EAE003BD99D /* MapLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA351B6B1EAE003BD99D /* MapLocationsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		577EBA201B69B3C3003BD99D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		577EBA211B69B3C4003BD99D /* On_The_MapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = On_The_MapTests.swift; sourceTree = "<group>"; };
 		577EBA2D1B6A361A003BD99D /* OnTheMapClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnTheMapClient.swift; sourceTree = "<group>"; };
+		577EBA331B6B1E98003BD99D /* ListLocationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListLocationsViewController.swift; sourceTree = "<group>"; };
+		577EBA351B6B1EAE003BD99D /* MapLocationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapLocationsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +85,6 @@
 		577EBA051B69B3C0003BD99D /* On The Map */ = {
 			isa = PBXGroup;
 			children = (
-				577EBA0F1B69B3C1003BD99D /* Main.storyboard */,
 				577EBA2B1B6A353F003BD99D /* Model */,
 				577EBA2C1B6A356C003BD99D /* View Controllers */,
 				577EBA061B69B3C0003BD99D /* Supporting Files */,
@@ -92,6 +95,7 @@
 		577EBA061B69B3C0003BD99D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				577EBA0F1B69B3C1003BD99D /* Main.storyboard */,
 				577EBA081B69B3C0003BD99D /* AppDelegate.swift */,
 				577EBA121B69B3C1003BD99D /* Images.xcassets */,
 				577EBA141B69B3C2003BD99D /* LaunchScreen.xib */,
@@ -130,6 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				577EBA0D1B69B3C1003BD99D /* LoginViewController.swift */,
+				577EBA331B6B1E98003BD99D /* ListLocationsViewController.swift */,
+				577EBA351B6B1EAE003BD99D /* MapLocationsViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -237,6 +243,8 @@
 				577EBA0E1B69B3C1003BD99D /* LoginViewController.swift in Sources */,
 				577EBA091B69B3C0003BD99D /* AppDelegate.swift in Sources */,
 				577EBA2E1B6A361A003BD99D /* OnTheMapClient.swift in Sources */,
+				577EBA341B6B1E98003BD99D /* ListLocationsViewController.swift in Sources */,
+				577EBA361B6B1EAE003BD99D /* MapLocationsViewController.swift in Sources */,
 				577EBA0C1B69B3C0003BD99D /* On_The_Map.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
