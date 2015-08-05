@@ -14,6 +14,8 @@ class OnTheMapClient {
     
     var sessionID: String? = nil
     
+    var studentLocations = [[String: AnyObject]]()
+    
     func authenticateUser(#username: String, password: String, completionHandler:(success: Bool, result: AnyObject!, error: String?) -> Void) {
         let parameters = [String: AnyObject]()
         
@@ -25,6 +27,7 @@ class OnTheMapClient {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.HTTPBody = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+
         
         let task = session.dataTaskWithRequest(request) { (data, response, downloadError) in
             if let err = downloadError {
@@ -63,13 +66,15 @@ class OnTheMapClient {
         
         let task = session.dataTaskWithRequest(request) { (data, response, downloadError) in
             var jsonError: NSError? = nil
-            let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as? NSDictionary
+            let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as! [String : AnyObject]
             
             if let err = jsonError {
                 println("Error - JSON Parsing")
                 return
             }else {
-                println(parsedResult)
+                // Save the downloaded Student locations
+                self.studentLocations = parsedResult["results"] as! [[String : AnyObject]]
+                println("\nthere are \(self.studentLocations.count) locations in OnTheMapClient")
             }
         }
         
