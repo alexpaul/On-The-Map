@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class InformationPostingVC: UIViewController {
+class InformationPostingVC: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var studentLocationTextField: UITextField!
     @IBOutlet weak var findOnTheMapButton: UIButton!
@@ -18,18 +18,7 @@ class InformationPostingVC: UIViewController {
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var mediaURLTextField: UITextField!
     
-    
-    // MARK: View Life Cycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Hide Map View and other associated UI Elements
-        self.mapView.hidden = true
-        self.submitButton.hidden = true
-        self.mediaURLTextField.hidden = true
-    }
-
+    var locationCoord: CLLocationCoordinate2D!
     
     // MARK: IBActions
     
@@ -39,6 +28,25 @@ class InformationPostingVC: UIViewController {
     
     @IBAction func findOnTheMapButtonPressed(sender: UIButton) {
         processPlacemarkUsingStudentLocation()
+    }
+    
+    // MARK: MapViewDelegate Methods
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        
+        let reuseID = "pin"
+        
+        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseID) as? MKPinAnnotationView
+        
+        if pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+            pinView!.canShowCallout = false
+            pinView!.pinColor = .Red
+            
+        }else {
+            pinView?.annotation = annotation
+        }
+        
+        return pinView
     }
     
     
@@ -53,14 +61,29 @@ class InformationPostingVC: UIViewController {
                 self.alertLocation()
                 return
             }else {
-                // Hide UI Elements if geocoding was successful
-                self.hideInitialUIElements()
+                var lat: CLLocationDegrees!
+                var long: CLLocationDegrees!
+                var mark: CLPlacemark!
+                
                 for placemark in placemarks {
-                    let mark = placemark as! CLPlacemark
-                    let lat = mark.location.coordinate.latitude
-                    let long = mark.location.coordinate.longitude
-                    println("\(lat) \(long)")
+                    mark = placemark as! CLPlacemark
+                    lat = mark.location.coordinate.latitude
+                    long = mark.location.coordinate.longitude
                 }
+                // Create location annotation
+                let annotation = MKPointAnnotation()
+                self.locationCoord = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                annotation.coordinate = self.locationCoord
+                
+                // Add annotation to the Map View 
+                self.mapView.addAnnotation(annotation)
+                let coordinateSpan = MKCoordinateSpanMake(0.01, 0.01) // 1 degree is 69 miles, 0.01 is 1 mile
+                let adjustedRegion = self.mapView.regionThatFits(MKCoordinateRegionMake(self.locationCoord, coordinateSpan))
+                self.mapView.setRegion(adjustedRegion, animated: true)
+                
+                // Hide Initial UI Elements if geocoding was successful
+                // Show MapView and other Relevant UI Elements
+                self.showMapViewAndRelevantUIElements()
             }
         }
     }
@@ -72,15 +95,44 @@ class InformationPostingVC: UIViewController {
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
-    func hideInitialUIElements() {
+    func showMapViewAndRelevantUIElements() {
         studentLocationTextField.hidden = true
         findOnTheMapButton.hidden = true
         promptTextView.hidden = true
         
         // Unhide Map View and other relevant UI Elements
+        unhideMapViewAndOtherUIElements()
+    }
+    
+    func unhideMapViewAndOtherUIElements() {
         self.mapView.hidden = false
         self.submitButton.hidden = false
         self.mediaURLTextField.hidden = false
     }
+    
+    @IBAction func submitButtonPressed(sender: UIButton) {
+        
+        let latitude = self.locationCoord.latitude as Double
+        let longitude = self.locationCoord.longitude as Double
+        let mapString = self.studentLocationTextField.text
+        let mediaURL = self.mediaURLTextField.text
+        
+        // Query if Student Location Already Exist
+        // If it Exist, Alert User that Location Exist in Parse
+        // If it Does Not Exist, Add the Location to Parse
+        let locationExist = OnTheMapClient.sharedInstance().queryStudentLocationExistInParse()
+        
+        if locationExist {
+            // TODO: Alert user that the Student Location Already Exist
+            println("Alert user that the Student Location Already Exist")
+        }else {
+            // TODO: Add the Student Location to Parse
+            println("Add the Student Location to Parse")
+            OnTheMapClient.sharedInstance().postStudentLocation(mapString, mediaURL: mediaURL, latitude: latitude, longitude: longitude)
+        }
+        
+        
+    }
+    
 
 }
