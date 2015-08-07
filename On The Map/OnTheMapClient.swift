@@ -17,6 +17,7 @@ class OnTheMapClient {
     var studentLocations = [[String: AnyObject]]()
     var firstName: String? = nil
     var lastName: String? = nil
+    var locationExists: Bool!
     
     func authenticateUser(#username: String, password: String, completionHandler:(success: Bool, result: AnyObject!, error: String?) -> Void) {
         let parameters = [String: AnyObject]()
@@ -62,7 +63,6 @@ class OnTheMapClient {
     }
     
     func getPublicUserData() {
-        println("getPublicUserData")
         
         let url = "https://www.udacity.com/api/users/\(self.userID!)"
         let urlString = NSURL(string: url)!
@@ -85,6 +85,12 @@ class OnTheMapClient {
     }
     
     func getStudentLocations() {
+        
+        // Query if Student Location Already Exist
+        // If it Exist, Alert User that Location Exist in Parse
+        // If it Does Not Exist, Add the Location to Parse
+        self.queryStudentLocationExistInParse()
+        
         let url = "https://api.parse.com/1/classes/StudentLocation"
         let urlString = NSURL(string: url)!
         
@@ -138,8 +144,7 @@ class OnTheMapClient {
         task.resume()
     }
     
-    func queryStudentLocationExistInParse() -> Bool{
-        var studentLocationExist = false
+    func queryStudentLocationExistInParse(){
         
         let url = "https://api.parse.com/1/classes/StudentLocation?where=%7B%22uniqueKey%22%3A%22" + "\(self.userID!)" + "%22%7D"
         let urlString = NSURL(string: url)!
@@ -153,17 +158,20 @@ class OnTheMapClient {
                 return
             }else {
                 var parsingError: NSError? = nil
-                let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! [String:AnyObject]
-                if let result = parsedResult["createdAt"] as? String {
-                    studentLocationExist = true
-                }else{
-                    studentLocationExist = false
+                let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! NSDictionary
+                let resultsArray = parsedResult.valueForKey("results") as! [[String: AnyObject]]
+                for results in resultsArray {
+                    if results["objectId"] as! String != "" {
+                        // Student Location Exists
+                        self.locationExists = true
+                    }else {
+                        // Student Location Does not Exist
+                        self.locationExists = false
+                    }
                 }
             }
         }
         task.resume()
-        
-        return studentLocationExist
     }
     
     // MARK: Shared Instance using Singleton methodology

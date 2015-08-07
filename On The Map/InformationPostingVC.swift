@@ -20,6 +20,8 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate {
     
     var locationCoord: CLLocationCoordinate2D!
     
+    // View Life Cycle
+    
     // MARK: IBActions
     
     @IBAction func cancelButtonPressed(sender: UIButton) {
@@ -117,20 +119,18 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate {
         let mapString = self.studentLocationTextField.text
         let mediaURL = self.mediaURLTextField.text
         
-        // Query if Student Location Already Exist
-        // If it Exist, Alert User that Location Exist in Parse
-        // If it Does Not Exist, Add the Location to Parse
-        let locationExist = OnTheMapClient.sharedInstance().queryStudentLocationExistInParse()
+        println(OnTheMapClient.sharedInstance().locationExists)
         
-        if locationExist {
-            // TODO: Alert user that the Student Location Already Exist
-            println("Alert user that the Student Location Already Exist")
-        }else {
-            // TODO: Add the Student Location to Parse
-            println("Add the Student Location to Parse")
-            OnTheMapClient.sharedInstance().postStudentLocation(mapString, mediaURL: mediaURL, latitude: latitude, longitude: longitude)
+        if let locationExist = OnTheMapClient.sharedInstance().locationExists {
+            if locationExist {
+                // TODO: Alert user that the Student Location Already Exist
+                println("Alert user that the Student Location Already Exist")
+            }else {
+                // Add the Student Location to Parse
+                println("Adding.......Student Location to Parse")
+                OnTheMapClient.sharedInstance().postStudentLocation(mapString, mediaURL: mediaURL, latitude: latitude, longitude: longitude)
+            }
         }
-        
         
     }
     
