@@ -19,4 +19,5 @@ struct StudentInformation {
     var mapString: String!
     var mediaURL: String?
     var uniqueKey: String!
+
 }

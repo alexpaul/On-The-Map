@@ -32,6 +32,7 @@ class OnTheMapClient {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.HTTPBody = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
 
+
         let task = session.dataTaskWithRequest(request) { (data, response, downloadError) in
             if let err = downloadError {
                 println("Error with Requesting Data")

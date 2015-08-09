@@ -23,6 +23,9 @@ class ListLocationsViewController: UIViewController, UITableViewDataSource, UITa
         let lastName = studentLocation.lastName!
         
         cell.textLabel?.text = firstName + " " + lastName
+        if let mediaURL = studentLocation.mediaURL {
+            cell.detailTextLabel?.text = mediaURL
+        }
         
         return cell
     }
