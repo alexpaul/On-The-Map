@@ -5,6 +5,7 @@
 //  Created by Alex Paul on 7/30/15.
 //  Copyright (c) 2015 Alex Paul. All rights reserved.
 //
+//  Uses a MapView to show Student Locations via Pin Annotations
 
 import UIKit
 import MapKit
@@ -14,7 +15,7 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var studentLocations = [[String:AnyObject]]()
+    var studentLocations = [StudentInformation]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,21 +37,24 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate {
             
             for location in self.studentLocations {
                 
-                let lat = CLLocationDegrees(location["latitude"] as! Double)
-                let long = CLLocationDegrees(location["longitude"] as! Double)
+                let lat = location.latitude as Double
+                let long = location.longitude as Double
+                
                 
                 let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
                 
-                let first = location["firstName"] as! String
-                let last = location["lastName"] as! String
-                let mediaURL = location["mediaURL"] as! String
+                let first = location.firstName!
+                let last = location.lastName!
                 
                 // Create the annotation and set its coordinate, title and subtitle properties
                 let annotation = MKPointAnnotation()
                 annotation.title = first + " " + last
                 annotation.coordinate = coordinate
-                annotation.subtitle = mediaURL
                 
+                if let mediaURL = location.mediaURL {
+                    annotation.subtitle = mediaURL
+                }
+
                 annotations.append(annotation)
             }
             self.mapView.addAnnotations(annotations)

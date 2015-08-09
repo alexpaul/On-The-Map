@@ -5,6 +5,7 @@
 //  Created by Alex Paul on 7/30/15.
 //  Copyright (c) 2015 Alex Paul. All rights reserved.
 //
+//  Uses a Table View to list Student Locations 
 
 import UIKit
 
@@ -18,8 +19,8 @@ class ListLocationsViewController: UIViewController, UITableViewDataSource, UITa
         let cell = tableView.dequeueReusableCellWithIdentifier("StudentLocationCell") as! UITableViewCell
         
         let studentLocation = OnTheMapClient.sharedInstance().studentLocations[indexPath.row]
-        let firstName = studentLocation["firstName"] as! String
-        let lastName = studentLocation["lastName"] as! String
+        let firstName = studentLocation.firstName!
+        let lastName = studentLocation.lastName!
         
         cell.textLabel?.text = firstName + " " + lastName
         
@@ -28,9 +29,9 @@ class ListLocationsViewController: UIViewController, UITableViewDataSource, UITa
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let studentLocation = OnTheMapClient.sharedInstance().studentLocations[indexPath.row]
-        let mediaURL = studentLocation["mediaURL"] as! String
-        
-        UIApplication.sharedApplication().openURL(NSURL(string: mediaURL)!)
+        if let mediaURL = studentLocation.mediaURL {
+            UIApplication.sharedApplication().openURL(NSURL(string: mediaURL)!)
+        }
     }
 
 }

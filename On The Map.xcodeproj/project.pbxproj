@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		573BD3C01B76E93000552C0B /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573BD3BF1B76E93000552C0B /* StudentInformation.swift */; };
 		577EBA091B69B3C0003BD99D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA081B69B3C0003BD99D /* AppDelegate.swift */; };
 		577EBA0C1B69B3C0003BD99D /* On_The_Map.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA0A1B69B3C0003BD99D /* On_The_Map.xcdatamodeld */; };
 		577EBA0E1B69B3C1003BD99D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA0D1B69B3C1003BD99D /* LoginViewController.swift */; };
@@ -32,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		573BD3BF1B76E93000552C0B /* StudentInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
 		577EBA031B69B3C0003BD99D /* On The Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On The Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		577EBA071B69B3C0003BD99D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		577EBA081B69B3C0003BD99D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				577EBA2D1B6A361A003BD99D /* OnTheMapClient.swift */,
+				573BD3BF1B76E93000552C0B /* StudentInformation.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				573BD3C01B76E93000552C0B /* StudentInformation.swift in Sources */,
 				577EBA0E1B69B3C1003BD99D /* LoginViewController.swift in Sources */,
 				577EBA091B69B3C0003BD99D /* AppDelegate.swift in Sources */,
 				577EBA2E1B6A361A003BD99D /* OnTheMapClient.swift in Sources */,
@@ -449,6 +453,7 @@
 				577EBA271B69B3C4003BD99D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		577EBA281B69B3C4003BD99D /* Build configuration list for PBXNativeTarget "On The MapTests" */ = {
 			isa = XCConfigurationList;
@@ -457,6 +462,7 @@
 				577EBA2A1B69B3C4003BD99D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

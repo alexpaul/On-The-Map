@@ -5,6 +5,7 @@
 //  Created by Alex Paul on 7/29/15.
 //  Copyright (c) 2015 Alex Paul. All rights reserved.
 //
+//  Enables the user to be authenticated via Udacity or Facebook using their appropriate credentials 
 
 import UIKit
 

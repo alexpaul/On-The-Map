@@ -5,6 +5,7 @@
 //  Created by Alex Paul on 7/30/15.
 //  Copyright (c) 2015 Alex Paul. All rights reserved.
 //
+//  OnTheMapClient handles all HTTP requests 
 
 import Foundation
 import MapKit
@@ -14,7 +15,7 @@ class OnTheMapClient {
     let session = NSURLSession.sharedSession()
     var sessionID: String? = nil
     var userID: String? = nil
-    var studentLocations = [[String: AnyObject]]()
+    var studentLocations = [StudentInformation]()
     var firstName: String? = nil
     var lastName: String? = nil
     var locationExists: Bool!
@@ -106,9 +107,20 @@ class OnTheMapClient {
                 println("Error - JSON Parsing")
                 return
             }else {
-                // Save the downloaded Student locations
-                self.studentLocations = parsedResult["results"] as! [[String : AnyObject]]
-                println("\nthere are \(self.studentLocations.count) locations in OnTheMapClient")
+                // Save the downloaded Student locations to an Array of StudentInformation Structs
+                let resultsDictionary = parsedResult["results"] as! [[String: AnyObject]]
+                
+                for result in resultsDictionary {
+                    var studentInfo = StudentInformation()
+                    studentInfo.firstName = result["firstName"] as! String
+                    studentInfo.lastName = result["lastName"] as! String
+                    studentInfo.latitude = result["latitude"] as! CLLocationDegrees
+                    studentInfo.longitude = result["longitude"] as! CLLocationDegrees
+                    studentInfo.mapString = result["mapString"] as! String
+                    studentInfo.mediaURL = result["mediaURL"] as? String
+                    
+                    self.studentLocations.append(studentInfo)
+                }
             }
         }
         
@@ -170,6 +182,27 @@ class OnTheMapClient {
                     }
                 }
             }
+        }
+        task.resume()
+    }
+    
+    func updateStudentLocation() {
+        
+        let urlString = "https://api.parse.com/1/classes/StudentLocation/\(self.userID!)"
+        let url = NSURL(string: urlString)
+        let request = NSMutableURLRequest(URL: url!)
+        
+        request.HTTPMethod = "PUT"
+        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.HTTPBody = "{\"uniqueKey\": \"\(self.userID!)\", \"firstName\": \"Brad\", \"lastName\": \"Jones\",\"mapString\": \"South Beach, FL\", \"mediaURL\": \"https://techmeme.com\",\"latitude\": 25.7819, \"longitude\": 80.1363}".dataUsingEncoding(NSUTF8StringEncoding)
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            if error != nil { // Handle error…
+                return
+            }
+            println(NSString(data: data, encoding: NSUTF8StringEncoding))
         }
         task.resume()
     }

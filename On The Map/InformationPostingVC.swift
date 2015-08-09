@@ -5,6 +5,7 @@
 //  Created by Alex Paul on 8/3/15.
 //  Copyright (c) 2015 Alex Paul. All rights reserved.
 //
+//  Here a Student can share their location and a link to be Posted on Parse 
 
 import UIKit
 import MapKit
@@ -19,8 +20,6 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mediaURLTextField: UITextField!
     
     var locationCoord: CLLocationCoordinate2D!
-    
-    // View Life Cycle
     
     // MARK: IBActions
     
