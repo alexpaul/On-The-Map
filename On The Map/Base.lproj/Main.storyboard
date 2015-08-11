@@ -37,7 +37,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="loginButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="uil-mw-X6E"/>
+                                    <action selector="udacityLoginButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ig6-fT-lnv"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="adm-6d-RTq">

@@ -20,6 +20,7 @@ class OnTheMapClient {
     var lastName: String? = nil
     var locationExists: Bool!
     
+    // MARK: HTTP POST Methods
     func authenticateUser(#username: String, password: String, completionHandler:(success: Bool, result: AnyObject!, error: String?) -> Void) {
         let parameters = [String: AnyObject]()
         
@@ -31,7 +32,6 @@ class OnTheMapClient {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.HTTPBody = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-
 
         let task = session.dataTaskWithRequest(request) { (data, response, downloadError) in
             if let err = downloadError {
@@ -63,6 +63,62 @@ class OnTheMapClient {
         }
         task.resume()
     }
+    
+    func facebookAuthentication(accessToken: String) {
+                
+        let url = "https://www.udacity.com/api/session"
+        let urlString = NSURL(string: url)!
+        let request = NSMutableURLRequest(URL: urlString)
+        
+        request.HTTPMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.HTTPBody = "{\"facebook_mobile\": {\"access_token\":\"\(accessToken)\"}}".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+        
+        let task = session.dataTaskWithRequest(request) { (data, response, downloadError) in
+            if downloadError != nil {
+                println("Error with Facebook Authentication")
+                return
+            }else {
+                let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) // subset of data response
+                var jsonError: NSError? = nil
+                let parsedResult = NSJSONSerialization.JSONObjectWithData(newData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as? NSDictionary
+                println(parsedResult)
+            }
+        }
+        task.resume()
+    }
+    
+    func postStudentLocation(mapString: String, mediaURL: String, latitude: Double, longitude: Double) {
+        
+        let url = "https://api.parse.com/1/classes/StudentLocation"
+        let urlString = NSURL(string: url)!
+        let request = NSMutableURLRequest(URL: urlString)
+        
+        let uniqueKey = self.userID!
+        let firstName = self.firstName!
+        let lastName = self.lastName!
+        
+        request.HTTPMethod = "POST"
+        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.HTTPBody = "{\"uniqueKey\": \"\(uniqueKey)\", \"firstName\": \"\(firstName)\", \"lastName\": \"\(lastName)\", \"mapString\": \"\(mapString)\", \"mediaURL\": \"\(mediaURL)\", \"latitude\": \(latitude), \"longitude\": \(longitude)}".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+        
+        let task = session.dataTaskWithRequest(request) { data, response, downloadError in
+            if downloadError != nil {
+                println("Error Posting Student Location")
+                return
+            }else {
+                var parsingError: NSError? = nil
+                let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! [String:AnyObject]
+                println(parsedResult)
+            }
+        }
+        task.resume()
+    }
+    
+    // MARK: HTTP GET Methods
     
     func getPublicUserData() {
         
@@ -128,35 +184,6 @@ class OnTheMapClient {
         task.resume()
     }
     
-    func postStudentLocation(mapString: String, mediaURL: String, latitude: Double, longitude: Double) {
-        
-        let url = "https://api.parse.com/1/classes/StudentLocation"
-        let urlString = NSURL(string: url)!
-        let request = NSMutableURLRequest(URL: urlString)
-        
-        let uniqueKey = self.userID!
-        let firstName = self.firstName!
-        let lastName = self.lastName!
-        
-        request.HTTPMethod = "POST"
-        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
-        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.HTTPBody = "{\"uniqueKey\": \"\(uniqueKey)\", \"firstName\": \"\(firstName)\", \"lastName\": \"\(lastName)\", \"mapString\": \"\(mapString)\", \"mediaURL\": \"\(mediaURL)\", \"latitude\": \(latitude), \"longitude\": \(longitude)}".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        
-        let task = session.dataTaskWithRequest(request) { data, response, downloadError in
-            if downloadError != nil {
-                println("Error Posting Student Location")
-                return
-            }else {
-                var parsingError: NSError? = nil
-                let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! [String:AnyObject]
-                println(parsedResult)
-            }
-        }
-        task.resume()
-    }
-    
     func queryStudentLocationExistInParse(){
         
         let url = "https://api.parse.com/1/classes/StudentLocation?where=%7B%22uniqueKey%22%3A%22" + "\(self.userID!)" + "%22%7D"
@@ -186,6 +213,8 @@ class OnTheMapClient {
         }
         task.resume()
     }
+    
+    // MARK: HTTP PUT Methods
     
     func updateStudentLocation() {
         
