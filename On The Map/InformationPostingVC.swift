@@ -10,7 +10,7 @@
 import UIKit
 import MapKit
 
-class InformationPostingVC: UIViewController, MKMapViewDelegate {
+class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var studentLocationTextField: UITextField!
     @IBOutlet weak var findOnTheMapButton: UIButton!
@@ -48,6 +48,13 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate {
         }
         
         return pinView
+    }
+    
+    // MARK: UITextFieldDelegate Methods
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     

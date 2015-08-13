@@ -305,10 +305,7 @@ class OnTheMapClient {
         struct Singleton {
             static var sharedIntance = OnTheMapClient()
         }
-        
         return Singleton.sharedIntance
     }
-    
-    // MARK: Helper Methods 
-    
+        
 }
