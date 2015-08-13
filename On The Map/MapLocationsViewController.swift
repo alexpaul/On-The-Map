@@ -17,6 +17,8 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate {
     
     var studentLocations = [StudentInformation]()
     
+    // MARK: View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
                 
@@ -62,6 +64,16 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate {
 
     }
     
+    // MARK: IBActions 
+    
+    @IBAction func logoutButtonPressed(sender: UIBarButtonItem) {
+        OnTheMapClient.sharedInstance().logoutUdacitySession()
+        
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
+    // MARK: Map View Delegate
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         

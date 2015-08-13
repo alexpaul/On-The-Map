@@ -49,12 +49,13 @@ class OnTheMapClient {
                             self.sessionID = sessionDictionary.valueForKey("id") as? String
                             // Store the User ID 
                             self.userID = accountDictionary.valueForKey("key") as? String
-                            // Get the User's Public Data 
+                            
+                            // Download Public Udacity User Data
                             self.getPublicUserData()
                             completionHandler(success: true, result: result, error: nil)
                         }
                     }else{
-                        completionHandler(success: false, result: nil, error: "Error with Login")
+                        completionHandler(success: false, result: nil, error: "Error with Account")
                     }
                 }else {
                     println("Error with JSON Result")
@@ -64,7 +65,7 @@ class OnTheMapClient {
         task.resume()
     }
     
-    func facebookAuthentication(accessToken: String) {
+    func facebookAuthentication(accessToken: String, completionHandler: (success: Bool, result: AnyObject!, error: String?) -> Void) {
                 
         let url = "https://www.udacity.com/api/session"
         let urlString = NSURL(string: url)!
@@ -82,8 +83,26 @@ class OnTheMapClient {
             }else {
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) // subset of data response
                 var jsonError: NSError? = nil
-                let parsedResult = NSJSONSerialization.JSONObjectWithData(newData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as? NSDictionary
-                println(parsedResult)
+                let jsonResult = NSJSONSerialization.JSONObjectWithData(newData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as? NSDictionary
+                println(jsonResult)
+                
+                if let result = jsonResult {
+                    if let accountDictionary = result.valueForKey("account") as? [String: AnyObject] {
+                        if let sessionDictionary = result.valueForKey("session") as? [String: AnyObject] {
+                            // Store the User ID and Sesssion ID
+                            self.userID = accountDictionary["key"] as? String
+                            self.sessionID = (sessionDictionary["id"] as? String)
+                            
+                            // Download Public Udacity User Data
+                            self.getPublicUserData()
+                            completionHandler(success: true, result: result, error: nil)
+                        }
+                    }else {
+                        completionHandler(success: false, result: result, error: "Error with Account")
+                    }
+                }else {
+                    println("Error with JSON Result")
+                }
             }
         }
         task.resume()
@@ -186,6 +205,8 @@ class OnTheMapClient {
     
     func queryStudentLocationExistInParse(){
         
+        println("userID: \(self.userID!)")
+        
         let url = "https://api.parse.com/1/classes/StudentLocation?where=%7B%22uniqueKey%22%3A%22" + "\(self.userID!)" + "%22%7D"
         let urlString = NSURL(string: url)!
         let request = NSMutableURLRequest(URL: urlString)
@@ -199,16 +220,20 @@ class OnTheMapClient {
             }else {
                 var parsingError: NSError? = nil
                 let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! NSDictionary
-                let resultsArray = parsedResult.valueForKey("results") as! [[String: AnyObject]]
-                for results in resultsArray {
-                    if results["objectId"] as! String != "" {
-                        // Student Location Exists
-                        self.locationExists = true
-                    }else {
-                        // Student Location Does not Exist
-                        self.locationExists = false
+                if let resultsArray = parsedResult.valueForKey("results") as? [[String: AnyObject]] {
+                    for results in resultsArray {
+                        if results["objectId"] as! String != "" {
+                            // Student Location Exists
+                            self.locationExists = true
+                        }else {
+                            // Student Location Does not Exist
+                            self.locationExists = false
+                        }
                     }
+                }else {
+                    println("Error Parsing Results")
                 }
+
             }
         }
         task.resume()
@@ -237,6 +262,42 @@ class OnTheMapClient {
         task.resume()
     }
     
+    // MARK: HTTP DELETE Methods 
+    
+    func logoutUdacitySession() {
+        
+        let url = "https://www.udacity.com/api/session"
+        let urlString = NSURL(string: url)!
+        let request = NSMutableURLRequest(URL: urlString)
+        
+        request.HTTPMethod = "DELETE"
+        
+        var xsrfCookie: NSHTTPCookie? = nil
+        let sharedCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
+        
+        for cookie in sharedCookieStorage.cookies as! [NSHTTPCookie] {
+            if cookie.name == "XSRF-TOKEN" {xsrfCookie = cookie}
+        }
+        
+        if let xsrfCookie = xsrfCookie {
+            request.setValue(xsrfCookie.value!, forHTTPHeaderField: "X-XSRF-TOKEN")
+        }
+        
+        let task = session.dataTaskWithRequest(request) { (data, response, jsonError) in
+            if jsonError != nil {
+                println("Error logging out")
+                return
+            }else {
+                let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+                var parsingError: NSError? = nil
+                let parsedResult = NSJSONSerialization.JSONObjectWithData(newData, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as? NSDictionary
+                
+                println(parsedResult)
+            }
+        }
+        task.resume()
+    }
+    
     // MARK: Shared Instance using Singleton methodology
     
     class func sharedInstance() -> OnTheMapClient {
@@ -247,4 +308,7 @@ class OnTheMapClient {
         
         return Singleton.sharedIntance
     }
+    
+    // MARK: Helper Methods 
+    
 }

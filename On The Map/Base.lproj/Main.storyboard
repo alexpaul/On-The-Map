@@ -229,7 +229,11 @@
                         <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="Lpq-Me-nkO"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="On The Map" id="gfX-IS-7Hf">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="chx-RK-GQe"/>
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="chx-RK-GQe">
+                            <connections>
+                                <action selector="logoutButtonPressed:" destination="hh2-Lc-vDI" id="zXc-fc-DB4"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="oOg-uZ-DOC">
                             <view key="customView" contentMode="scaleToFill" id="l2x-Lc-2n5">
                                 <rect key="frame" x="451" y="1" width="133" height="40"/>

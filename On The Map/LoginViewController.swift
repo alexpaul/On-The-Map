@@ -20,26 +20,46 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
-    // MARK: View Life Cycles 
+    var facebookLoginButton: FBSDKLoginButton!
+    var facebookLoginSuccess = false
+    
+    // MARK: View Life Cycles
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // TODO: may have to done explicity on the Main Thread
+        self.usernameTextField.text = ""
+        self.passwordTextField.text = ""
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Create and Add Facebook Login Button
-        let loginButton = FBSDKLoginButton()
+        self.facebookLoginButton = FBSDKLoginButton()
         let viewCenterPoint = self.view.center
-        loginButton.center = CGPointMake(viewCenterPoint.x, viewCenterPoint.y + 44)
-        self.view.addSubview(loginButton)
+        self.facebookLoginButton.center = CGPointMake(viewCenterPoint.x, viewCenterPoint.y + 44)
+        self.view.addSubview(self.facebookLoginButton)
+        
         
         // Check for existing Facebook Tokens
         // This eliminates an unnecessary app switch to Facebook if user already granted permissions
         if let accessToken = FBSDKAccessToken.currentAccessToken()?.tokenString {
-            OnTheMapClient.sharedInstance().facebookAuthentication(accessToken)
+            // Authenticate Facebook User
+            OnTheMapClient.sharedInstance().facebookAuthentication(accessToken) { (success, result, error) in
+                if success {
+                    self.facebookLoginSuccess = true
+                }else {
+                    self.facebookLoginSuccess = false
+                }
+            }
         } else {
-            println("No Existing Tokens")
+            println("Error locating token")
         }
+        
+        self.facebookLoginButton.addTarget(self, action: "facebookLoginButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
     }
-    
     
     // MARK: IBActions
 
@@ -53,7 +73,6 @@ class LoginViewController: UIViewController {
                 self.loginAlertMessage(error)
             }
         }
-        
     }
     
     @IBAction func signupButtonPressed(sender: UIButton) {
@@ -78,6 +97,15 @@ class LoginViewController: UIViewController {
         let alertAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
         alertController.addAction(alertAction)
         self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func facebookLoginButtonPressed() {
+        
+        if self.facebookLoginButton.selected { // "log out"
+            self.completeLogin()
+        }else { // "log in with facebook"
+            
+        }
     }
     
 
