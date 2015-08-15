@@ -19,5 +19,10 @@ struct StudentInformation {
     var mapString: String!
     var mediaURL: String?
     var uniqueKey: String!
+    
+    // User Links 
+    var linkedInURL: String? = nil
+    var websiteURL: String? = nil
+    var imageURL: String? = nil
 
 }

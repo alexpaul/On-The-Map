@@ -52,6 +52,7 @@ class LoginViewController: UIViewController {
                     self.facebookLoginSuccess = true
                 }else {
                     self.facebookLoginSuccess = false
+                    self.loginAlertMessage(error)
                 }
             }
         } else {
@@ -70,7 +71,9 @@ class LoginViewController: UIViewController {
             if success {
                 self.completeLogin()
             }else {
-                self.loginAlertMessage(error)
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.loginAlertMessage(error)
+                }
             }
         }
     }
@@ -83,8 +86,13 @@ class LoginViewController: UIViewController {
     
     func completeLogin() {
         
-        // Get the Students Locations from the Parse API
-        OnTheMapClient.sharedInstance().getStudentLocations()
+        // Download the Students Locations from Parse
+        OnTheMapClient.sharedInstance().getStudentLocations { (error) in
+            if error != nil {
+                // TODO: Add an Alert to inform the user that Student Locations failed to Download
+                println("Error downloading student locations: \(error)")
+            }
+        }
         
         dispatch_async(dispatch_get_main_queue()) {
             let tabBarController = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarController") as! UITabBarController
@@ -104,7 +112,7 @@ class LoginViewController: UIViewController {
         if self.facebookLoginButton.selected { // "log out"
             self.completeLogin()
         }else { // "log in with facebook"
-            
+
         }
     }
     

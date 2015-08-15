@@ -19,6 +19,9 @@ class OnTheMapClient {
     var firstName: String? = nil
     var lastName: String? = nil
     var locationExists: Bool!
+    var linkedIInURL: String? = nil
+    var websiteURL: String? = nil
+    var imageURL: String? = nil
     
     // MARK: HTTP POST Methods
     func authenticateUser(#username: String, password: String, completionHandler:(success: Bool, result: AnyObject!, error: String?) -> Void) {
@@ -35,7 +38,8 @@ class OnTheMapClient {
 
         let task = session.dataTaskWithRequest(request) { (data, response, downloadError) in
             if let err = downloadError {
-                println("Error with Requesting Data")
+                // Possible Error with Network Connection
+                completionHandler(success: false, result: nil, error: downloadError.localizedDescription)
             }else {
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
                 
@@ -78,7 +82,8 @@ class OnTheMapClient {
         
         let task = session.dataTaskWithRequest(request) { (data, response, downloadError) in
             if downloadError != nil {
-                println("Error with Facebook Authentication")
+                // Possible Error with Network Connection
+                completionHandler(success: false, result: nil, error: downloadError.localizedDescription)
                 return
             }else {
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) // subset of data response
@@ -108,7 +113,7 @@ class OnTheMapClient {
         task.resume()
     }
     
-    func postStudentLocation(mapString: String, mediaURL: String, latitude: Double, longitude: Double) {
+    func postStudentLocation(mapString: String, mediaURL: String, latitude: Double, longitude: Double, completionHandler: (success: Bool, result: AnyObject!, error: NSError?) -> Void) {
         
         let url = "https://api.parse.com/1/classes/StudentLocation"
         let urlString = NSURL(string: url)!
@@ -127,6 +132,7 @@ class OnTheMapClient {
         let task = session.dataTaskWithRequest(request) { data, response, downloadError in
             if downloadError != nil {
                 println("Error Posting Student Location")
+                completionHandler(success: false, result: nil, error: downloadError)
                 return
             }else {
                 var parsingError: NSError? = nil
@@ -154,14 +160,22 @@ class OnTheMapClient {
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) // subset response data
                 let parsedResult = NSJSONSerialization.JSONObjectWithData(newData, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! [String:AnyObject]
                 let userDictionary = parsedResult["user"] as! [String:AnyObject]
+                println(userDictionary)
                 self.firstName = userDictionary["first_name"] as? String
                 self.lastName = userDictionary["last_name"] as? String
+                
+                // User's links 
+                self.linkedIInURL = userDictionary["linked_in"] as? String
+                self.websiteURL = userDictionary["website_url"] as? String
+                self.imageURL = userDictionary["_image_url"] as? String
+                
+                println("User's Links: \n \(self.linkedIInURL) \n \(self.websiteURL) \n \(self.imageURL)")
             }
         }
         task.resume()
     }
     
-    func getStudentLocations() {
+    func getStudentLocations(completionHandler: (error: NSError?) -> Void) {
         
         // Query if Student Location Already Exist
         // If it Exist, Alert User that Location Exist in Parse
@@ -181,6 +195,7 @@ class OnTheMapClient {
             
             if let err = jsonError {
                 println("Error - JSON Parsing")
+                completionHandler(error: err)
                 return
             }else {
                 // Save the downloaded Student locations to an Array of StudentInformation Structs

@@ -10,6 +10,7 @@
 		573BD3C01B76E93000552C0B /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573BD3BF1B76E93000552C0B /* StudentInformation.swift */; };
 		573BD3C31B77AA2F00552C0B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573BD3C21B77AA2F00552C0B /* FBSDKCoreKit.framework */; };
 		573BD3C51B77B26A00552C0B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573BD3C41B77B26A00552C0B /* FBSDKLoginKit.framework */; };
+		573BD3C71B7CA2B800552C0B /* BrowseLinksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573BD3C61B7CA2B800552C0B /* BrowseLinksViewController.swift */; };
 		577EBA091B69B3C0003BD99D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA081B69B3C0003BD99D /* AppDelegate.swift */; };
 		577EBA0C1B69B3C0003BD99D /* On_The_Map.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA0A1B69B3C0003BD99D /* On_The_Map.xcdatamodeld */; };
 		577EBA0E1B69B3C1003BD99D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA0D1B69B3C1003BD99D /* LoginViewController.swift */; };
@@ -38,6 +39,7 @@
 		573BD3BF1B76E93000552C0B /* StudentInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
 		573BD3C21B77AA2F00552C0B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		573BD3C41B77B26A00552C0B /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		573BD3C61B7CA2B800552C0B /* BrowseLinksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowseLinksViewController.swift; sourceTree = "<group>"; };
 		577EBA031B69B3C0003BD99D /* On The Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On The Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		577EBA071B69B3C0003BD99D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		577EBA081B69B3C0003BD99D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				577EBA351B6B1EAE003BD99D /* MapLocationsViewController.swift */,
 				577EBA331B6B1E98003BD99D /* ListLocationsViewController.swift */,
 				577EBA391B70482F003BD99D /* InformationPostingVC.swift */,
+				573BD3C61B7CA2B800552C0B /* BrowseLinksViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				577EBA2E1B6A361A003BD99D /* OnTheMapClient.swift in Sources */,
 				577EBA341B6B1E98003BD99D /* ListLocationsViewController.swift in Sources */,
 				577EBA3A1B70482F003BD99D /* InformationPostingVC.swift in Sources */,
+				573BD3C71B7CA2B800552C0B /* BrowseLinksViewController.swift in Sources */,
 				577EBA361B6B1EAE003BD99D /* MapLocationsViewController.swift in Sources */,
 				577EBA0C1B69B3C0003BD99D /* On_The_Map.xcdatamodeld in Sources */,
 			);

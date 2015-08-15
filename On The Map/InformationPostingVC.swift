@@ -31,6 +31,12 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
         processPlacemarkUsingStudentLocation()
     }
     
+    @IBAction func browseLinksButtonPressed(sender: UIButton) {
+        let browseLinksVC = self.storyboard?.instantiateViewControllerWithIdentifier("BrowseLinksViewController") as? BrowseLinksViewController
+        self.presentViewController(browseLinksVC!, animated: true, completion: nil)
+    }
+    
+    
     // MARK: MapViewDelegate Methods
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         
@@ -103,6 +109,10 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
+    func alertPOSTFailed() {
+        
+    }
+    
     func showMapViewAndRelevantUIElements() {
         studentLocationTextField.hidden = true
         findOnTheMapButton.hidden = true
@@ -134,7 +144,12 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
             }else {
                 // Add the Student Location to Parse
                 println("Adding.......Student Location to Parse")
-                OnTheMapClient.sharedInstance().postStudentLocation(mapString, mediaURL: mediaURL, latitude: latitude, longitude: longitude)
+                OnTheMapClient.sharedInstance().postStudentLocation(mapString, mediaURL: mediaURL, latitude: latitude, longitude: longitude) { (success, result, error) in
+                    if error != nil {
+                        // TODO: Add an Alert to inform the user that the POST Failed
+                        println("POST Failed with Error: \(error?.localizedDescription)")
+                    }
+                }
             }
         }
         
