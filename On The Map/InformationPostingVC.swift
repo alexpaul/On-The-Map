@@ -18,8 +18,27 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var mediaURLTextField: UITextField!
+    @IBOutlet weak var browseLinksButton: UIButton!
+    
     
     var locationCoord: CLLocationCoordinate2D!
+    let links = [OnTheMapClient.sharedInstance().linkedIInURL,
+                OnTheMapClient.sharedInstance().websiteURL,
+                OnTheMapClient.sharedInstance().imageURL]
+    var selectedLink: String? = nil
+    
+    // MARK: View Life Cycle 
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        println("viewWillAppear")
+        
+        if let link = self.selectedLink {
+            println("selected link: \(link)")
+            self.mediaURLTextField.text = link
+        }
+    }
     
     // MARK: IBActions
     
@@ -32,8 +51,25 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
     }
     
     @IBAction func browseLinksButtonPressed(sender: UIButton) {
+        
+        // Create a UINavigation Controller 
+        // Embed the Browse Links View Controller in the Instantiated Navigation Controller
+        let browseLinksNavController = self.storyboard?.instantiateViewControllerWithIdentifier("BrowseLinksNavController") as? UINavigationController
         let browseLinksVC = self.storyboard?.instantiateViewControllerWithIdentifier("BrowseLinksViewController") as? BrowseLinksViewController
-        self.presentViewController(browseLinksVC!, animated: true, completion: nil)
+        let viewControllers = [browseLinksVC!]
+
+        // Pass the Links Data to the Browse Links View Controller
+        browseLinksVC?.links = self.links
+        browseLinksNavController?.setViewControllers(viewControllers, animated: true)
+        
+        self.presentViewController(browseLinksNavController!, animated: true, completion: nil)
+    }
+    
+    @IBAction func unwindToInformationPostingVC(sender: UIStoryboardSegue) {
+        println("unwind segue")
+        let browseLinksVC = sender.sourceViewController as! BrowseLinksViewController
+        self.selectedLink = browseLinksVC.selectedLink
+        println("link in unwind segue: \(self.selectedLink)")
     }
     
     
@@ -126,6 +162,7 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
         self.mapView.hidden = false
         self.submitButton.hidden = false
         self.mediaURLTextField.hidden = false
+        self.browseLinksButton.hidden = false 
     }
     
     @IBAction func submitButtonPressed(sender: UIButton) {
