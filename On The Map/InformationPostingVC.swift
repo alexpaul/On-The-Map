@@ -133,7 +133,7 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
                 
                 // Hide Initial UI Elements if geocoding was successful
                 // Show MapView and other Relevant UI Elements
-                self.showMapViewAndRelevantUIElements()
+                self.animateMapViewAndRelevantUIElements()
             }
         }
     }
@@ -149,20 +149,18 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
         
     }
     
-    func showMapViewAndRelevantUIElements() {
-        studentLocationTextField.hidden = true
-        findOnTheMapButton.hidden = true
-        promptTextView.hidden = true
-        
-        // Unhide Map View and other relevant UI Elements
-        unhideMapViewAndOtherUIElements()
-    }
-    
-    func unhideMapViewAndOtherUIElements() {
-        self.mapView.hidden = false
-        self.submitButton.hidden = false
-        self.mediaURLTextField.hidden = false
-        self.browseLinksButton.hidden = false 
+    func animateMapViewAndRelevantUIElements() {
+        // Animate alpha/transparency of UI Elements during Geocoding
+        UIView.animateWithDuration(0.8) {
+            self.studentLocationTextField.alpha = 0.0
+            self.findOnTheMapButton.alpha = 0.0
+            self.promptTextView.alpha = 0.0
+            
+            self.mapView.alpha = 1.0
+            self.submitButton.alpha = 1.0
+            self.mediaURLTextField.alpha = 1.0
+            self.browseLinksButton.alpha = 1.0
+        }
     }
     
     @IBAction func submitButtonPressed(sender: UIButton) {
