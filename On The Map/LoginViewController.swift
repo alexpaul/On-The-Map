@@ -43,23 +43,23 @@ class LoginViewController: UIViewController {
         self.view.addSubview(self.facebookLoginButton)
         
         
-        // Check for existing Facebook Tokens
-        // This eliminates an unnecessary app switch to Facebook if user already granted permissions
-        if let accessToken = FBSDKAccessToken.currentAccessToken()?.tokenString {
-            // Authenticate Facebook User
-            OnTheMapClient.sharedInstance().facebookAuthentication(accessToken) { (success, result, error) in
-                if success {
-                    self.facebookLoginSuccess = true
-                }else {
-                    self.facebookLoginSuccess = false
-                    self.loginAlertMessage(error)
-                }
-            }
-        } else {
-            println("Error locating token")
-        }
-        
-        self.facebookLoginButton.addTarget(self, action: "facebookLoginButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+//        // Check for existing Facebook Tokens
+//        // This eliminates an unnecessary app switch to Facebook if user already granted permissions
+//        if let accessToken = FBSDKAccessToken.currentAccessToken()?.tokenString {
+//            // Authenticate Facebook User
+//            OnTheMapClient.sharedInstance().facebookAuthentication(accessToken) { (success, result, error) in
+//                if success {
+//                    self.facebookLoginSuccess = true
+//                }else {
+//                    self.facebookLoginSuccess = false
+//                    self.loginAlertMessage(error)
+//                }
+//            }
+//        } else {
+//            println("Error locating token")
+//        }
+//        
+//        self.facebookLoginButton.addTarget(self, action: "facebookLoginButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
     // MARK: IBActions

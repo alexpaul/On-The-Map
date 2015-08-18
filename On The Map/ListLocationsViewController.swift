@@ -11,6 +11,19 @@ import UIKit
 
 class ListLocationsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    // MARK: View Life Cycle 
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Create two (2) Button Bar Items on the Right Side of the Navigation Bar
+        let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Refresh, target: self, action: "refreshButtonPressed")
+        let postButton = UIBarButtonItem(image: UIImage(named: "pin"), style: UIBarButtonItemStyle.Plain, target: self, action: "postButtonPressed")
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItems = [refreshButton, postButton]
+    }
+    
+    // MARK: UITableViewDataSource Methods
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return OnTheMapClient.sharedInstance().studentLocations.count
     }
@@ -30,11 +43,33 @@ class ListLocationsViewController: UIViewController, UITableViewDataSource, UITa
         return cell
     }
     
+    // MARK: UITableViewDelegate Methods
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let studentLocation = OnTheMapClient.sharedInstance().studentLocations[indexPath.row]
         if let mediaURL = studentLocation.mediaURL {
             UIApplication.sharedApplication().openURL(NSURL(string: mediaURL)!)
         }
+    }
+    
+    // MARK: IBActions 
+    
+    @IBAction func logoutButtonPressed(sender: UIBarButtonItem) {
+        OnTheMapClient.sharedInstance().logoutUdacitySession()
+        
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
+    // MARK: Helper Methods 
+    
+    func postButtonPressed() {
+        let infoPostVC = self.storyboard?.instantiateViewControllerWithIdentifier("InformationPostingVC") as! InformationPostingVC
+        self.navigationController?.presentViewController(infoPostVC, animated: true, completion: nil)
+    }
+    
+    func refreshButtonPressed() {
+        
     }
 
 }

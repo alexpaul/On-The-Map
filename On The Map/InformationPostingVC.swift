@@ -131,7 +131,7 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
                 let adjustedRegion = self.mapView.regionThatFits(MKCoordinateRegionMake(self.locationCoord, coordinateSpan))
                 self.mapView.setRegion(adjustedRegion, animated: true)
                 
-                // Hide Initial UI Elements if geocoding was successful
+                // Animate UI Elements during geocoding
                 // Show MapView and other Relevant UI Elements
                 self.animateMapViewAndRelevantUIElements()
             }

@@ -21,7 +21,12 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
+        // Create two (2) Button Bar Items on the Right Side of the Navigation Bar
+        let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Refresh, target: self, action: "refreshButtonPressed")
+        let postButton = UIBarButtonItem(image: UIImage(named: "pin"), style: UIBarButtonItemStyle.Plain, target: self, action: "postButtonPressed")
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItems = [refreshButton, postButton]
+        
         self.activityIndicator.hidesWhenStopped = true
         
         let delay = 4.5 * Double(NSEC_PER_SEC)
@@ -98,6 +103,17 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate {
         if control == view.rightCalloutAccessoryView {
             UIApplication.sharedApplication().openURL(NSURL(string: view.annotation.subtitle!)!)
         }
+    }
+    
+    // MARK: Helper Methods 
+    
+    func postButtonPressed() {
+        let infoPostVC = self.storyboard?.instantiateViewControllerWithIdentifier("InformationPostingVC") as! InformationPostingVC
+        self.navigationController?.presentViewController(infoPostVC, animated: true, completion: nil)
+    }
+    
+    func refreshButtonPressed() {
+        
     }
     
 }

@@ -137,7 +137,6 @@ class OnTheMapClient {
             }else {
                 var parsingError: NSError? = nil
                 let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! [String:AnyObject]
-                println(parsedResult)
             }
         }
         task.resume()
@@ -160,7 +159,6 @@ class OnTheMapClient {
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) // subset response data
                 let parsedResult = NSJSONSerialization.JSONObjectWithData(newData, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! [String:AnyObject]
                 let userDictionary = parsedResult["user"] as! [String:AnyObject]
-                println(userDictionary)
                 self.firstName = userDictionary["first_name"] as? String
                 self.lastName = userDictionary["last_name"] as? String
                 
@@ -168,8 +166,6 @@ class OnTheMapClient {
                 self.linkedIInURL = userDictionary["linked_in"] as? String
                 self.websiteURL = userDictionary["website_url"] as? String
                 self.imageURL = userDictionary["_image_url"] as? String
-                
-                println("User's Links: \n \(self.linkedIInURL) \n \(self.websiteURL) \n \(self.imageURL)")
             }
         }
         task.resume()
@@ -220,8 +216,6 @@ class OnTheMapClient {
     
     func queryStudentLocationExistInParse(){
         
-        println("userID: \(self.userID!)")
-        
         let url = "https://api.parse.com/1/classes/StudentLocation?where=%7B%22uniqueKey%22%3A%22" + "\(self.userID!)" + "%22%7D"
         let urlString = NSURL(string: url)!
         let request = NSMutableURLRequest(URL: urlString)
@@ -256,6 +250,7 @@ class OnTheMapClient {
     
     // MARK: HTTP PUT Methods
     
+    // TODO: Update Student Location 
     func updateStudentLocation() {
         
         let urlString = "https://api.parse.com/1/classes/StudentLocation/\(self.userID!)"
@@ -306,8 +301,6 @@ class OnTheMapClient {
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
                 var parsingError: NSError? = nil
                 let parsedResult = NSJSONSerialization.JSONObjectWithData(newData, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as? NSDictionary
-                
-                println(parsedResult)
             }
         }
         task.resume()

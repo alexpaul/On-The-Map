@@ -234,39 +234,6 @@
                                 <action selector="logoutButtonPressed:" destination="hh2-Lc-vDI" id="zXc-fc-DB4"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="oOg-uZ-DOC">
-                            <view key="customView" contentMode="scaleToFill" id="l2x-Lc-2n5">
-                                <rect key="frame" x="451" y="1" width="133" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7g8-S9-fYG">
-                                        <rect key="frame" x="0.0" y="0.0" width="133" height="40"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bvk-Eg-hqg">
-                                                <rect key="frame" x="0.0" y="0.0" width="133" height="40"/>
-                                                <subviews>
-                                                    <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qzi-CL-t8i">
-                                                        <rect key="frame" x="0.0" y="-4" width="133" height="44"/>
-                                                        <items>
-                                                            <barButtonItem systemItem="refresh" id="UOD-K0-8d5"/>
-                                                            <barButtonItem title="Post" id="9cS-cz-bVT">
-                                                                <connections>
-                                                                    <segue destination="9ne-5S-krM" kind="presentation" id="wMT-za-RbK"/>
-                                                                </connections>
-                                                            </barButtonItem>
-                                                        </items>
-                                                    </toolbar>
-                                                </subviews>
-                                                <color key="backgroundColor" white="0.96732954550000005" alpha="1" colorSpace="calibratedWhite"/>
-                                            </view>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.96732954550000005" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.96732954545454553" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <color key="tintColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
-                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -324,7 +291,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="On The Map" id="EI6-Z4-Rpf">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="upb-nk-0rX"/>
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="upb-nk-0rX">
+                            <connections>
+                                <action selector="logoutButtonPressed:" destination="IRc-62-OkC" id="SsH-b9-H7q"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kVo-Kj-X1a" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -334,7 +305,7 @@
         <!--Information PostingVC-->
         <scene sceneID="hMr-id-42p">
             <objects>
-                <viewController id="9ne-5S-krM" customClass="InformationPostingVC" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InformationPostingVC" id="9ne-5S-krM" customClass="InformationPostingVC" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="VEE-gq-5Yx"/>
                         <viewControllerLayoutGuide type="bottom" id="cWD-Ef-Fey"/>
@@ -369,7 +340,7 @@
                                             <action selector="cancelButtonPressed:" destination="9ne-5S-krM" eventType="touchUpInside" id="dXO-ck-5b3"/>
                                         </connections>
                                     </button>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Where are you                          studying                   today" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Nf1-TD-IuH">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Where are you                               studying today" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Nf1-TD-IuH">
                                         <rect key="frame" x="150" y="54" width="301" height="100"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -463,7 +434,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ezd-Ij-QI7">
                                 <rect key="frame" x="0.0" y="177" width="600" height="300"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W7P-so-IK5">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Your Location" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W7P-so-IK5">
                                         <rect key="frame" x="152" y="38" width="296" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="296" id="SLG-Zu-Ks6"/>
@@ -580,7 +551,7 @@
         <scene sceneID="gg8-Rf-y1a">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="wud-Av-gvL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Map" id="smS-Em-Wqf"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="map" id="smS-Em-Wqf"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0E5-hp-fff">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -599,7 +570,7 @@
         <scene sceneID="fdR-z3-pIc">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zpZ-fE-jt7" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="List" id="kOt-cc-kVh"/>
+                    <tabBarItem key="tabBarItem" title="List" image="list" id="kOt-cc-kVh"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hLV-70-FN4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -633,4 +604,8 @@
             <point key="canvasLocation" x="3430" y="1063"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="list" width="32" height="32"/>
+        <image name="map" width="32" height="32"/>
+    </resources>
 </document>
