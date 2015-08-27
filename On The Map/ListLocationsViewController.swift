@@ -38,6 +38,7 @@ class ListLocationsViewController: UIViewController, UITableViewDataSource, UITa
         cell.textLabel?.text = firstName + " " + lastName
         if let mediaURL = studentLocation.mediaURL {
             cell.detailTextLabel?.text = mediaURL
+            cell.imageView?.image = UIImage(named: "pin")
         }
         
         return cell
