@@ -11,6 +11,9 @@
 		573BD3C31B77AA2F00552C0B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573BD3C21B77AA2F00552C0B /* FBSDKCoreKit.framework */; };
 		573BD3C51B77B26A00552C0B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573BD3C41B77B26A00552C0B /* FBSDKLoginKit.framework */; };
 		573BD3C71B7CA2B800552C0B /* BrowseLinksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573BD3C61B7CA2B800552C0B /* BrowseLinksViewController.swift */; };
+		57760DC91B8F18B100503E0F /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57760DC61B8F16C800503E0F /* Roboto-Medium.ttf */; };
+		57760DCA1B8F18B600503E0F /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57760DC71B8F16C800503E0F /* Roboto-Regular.ttf */; };
+		57760DCB1B8F18BC00503E0F /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57760DC81B8F16C800503E0F /* Roboto-Thin.ttf */; };
 		577EBA091B69B3C0003BD99D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA081B69B3C0003BD99D /* AppDelegate.swift */; };
 		577EBA0C1B69B3C0003BD99D /* On_The_Map.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA0A1B69B3C0003BD99D /* On_The_Map.xcdatamodeld */; };
 		577EBA0E1B69B3C1003BD99D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577EBA0D1B69B3C1003BD99D /* LoginViewController.swift */; };
@@ -40,6 +43,9 @@
 		573BD3C21B77AA2F00552C0B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		573BD3C41B77B26A00552C0B /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		573BD3C61B7CA2B800552C0B /* BrowseLinksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowseLinksViewController.swift; sourceTree = "<group>"; };
+		57760DC61B8F16C800503E0F /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
+		57760DC71B8F16C800503E0F /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		57760DC81B8F16C800503E0F /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		577EBA031B69B3C0003BD99D /* On The Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On The Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		577EBA071B69B3C0003BD99D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		577EBA081B69B3C0003BD99D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -122,6 +128,9 @@
 			children = (
 				577EBA0F1B69B3C1003BD99D /* Main.storyboard */,
 				577EBA081B69B3C0003BD99D /* AppDelegate.swift */,
+				57760DC61B8F16C800503E0F /* Roboto-Medium.ttf */,
+				57760DC71B8F16C800503E0F /* Roboto-Regular.ttf */,
+				57760DC81B8F16C800503E0F /* Roboto-Thin.ttf */,
 				577EBA121B69B3C1003BD99D /* Images.xcassets */,
 				577EBA141B69B3C2003BD99D /* LaunchScreen.xib */,
 				577EBA0A1B69B3C0003BD99D /* On_The_Map.xcdatamodeld */,
@@ -249,7 +258,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57760DC91B8F18B100503E0F /* Roboto-Medium.ttf in Resources */,
 				577EBA111B69B3C1003BD99D /* Main.storyboard in Resources */,
+				57760DCB1B8F18BC00503E0F /* Roboto-Thin.ttf in Resources */,
+				57760DCA1B8F18B600503E0F /* Roboto-Regular.ttf in Resources */,
 				577EBA161B69B3C2003BD99D /* LaunchScreen.xib in Resources */,
 				577EBA131B69B3C1003BD99D /* Images.xcassets in Resources */,
 			);

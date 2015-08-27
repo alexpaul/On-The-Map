@@ -22,8 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // # Step 2. 
         return FBSDKApplicationDelegate.sharedInstance() .application(application, didFinishLaunchingWithOptions: launchOptions)
-        
-        //return true
     }
 
     func applicationWillResignActive(application: UIApplication) {
