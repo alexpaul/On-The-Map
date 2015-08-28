@@ -24,5 +24,14 @@ struct StudentInformation {
     var linkedInURL: String? = nil
     var websiteURL: String? = nil
     var imageURL: String? = nil
+    
+    init(fName: String, lName:String, lat: CLLocationDegrees, long: CLLocationDegrees, mString: String, mURL: String) {
+        firstName = fName
+        lastName = lName
+        latitude = lat
+        longitude = long
+        mapString = mString
+        mediaURL = mURL
+    }
 
 }

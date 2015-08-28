@@ -198,13 +198,21 @@ class OnTheMapClient {
                 let resultsDictionary = parsedResult["results"] as! [[String: AnyObject]]
                 
                 for result in resultsDictionary {
-                    var studentInfo = StudentInformation()
-                    studentInfo.firstName = result["firstName"] as! String
-                    studentInfo.lastName = result["lastName"] as! String
-                    studentInfo.latitude = result["latitude"] as! CLLocationDegrees
-                    studentInfo.longitude = result["longitude"] as! CLLocationDegrees
-                    studentInfo.mapString = result["mapString"] as! String
-                    studentInfo.mediaURL = result["mediaURL"] as? String
+                    var studentInfo = StudentInformation(fName: result["firstName"] as! String,
+                        lName: result["lastName"] as! String,
+                        lat: result["latitude"] as! CLLocationDegrees,
+                        long: result["longitude"] as! CLLocationDegrees,
+                        mString: result["mapString"] as! String,
+                        mURL: result["mediaURL"] as! String)
+                    
+                    
+//                    var studentInfo = StudentInformation()
+//                    studentInfo.firstName = result["firstName"] as! String
+//                    studentInfo.lastName = result["lastName"] as! String
+//                    studentInfo.latitude = result["latitude"] as! CLLocationDegrees
+//                    studentInfo.longitude = result["longitude"] as! CLLocationDegrees
+//                    studentInfo.mapString = result["mapString"] as! String
+//                    studentInfo.mediaURL = result["mediaURL"] as? String
                     
                     self.studentLocations.append(studentInfo)
                 }
