@@ -9,7 +9,11 @@
 
 import UIKit
 
+
+
 class ListLocationsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: View Life Cycle 
     
@@ -61,8 +65,7 @@ class ListLocationsViewController: UIViewController, UITableViewDataSource, UITa
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    
-    // MARK: Helper Methods 
+    // MARK: Helper Methods
     
     func postButtonPressed() {
         let infoPostVC = self.storyboard?.instantiateViewControllerWithIdentifier("InformationPostingVC") as! InformationPostingVC
@@ -70,7 +73,22 @@ class ListLocationsViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     func refreshButtonPressed() {
+        self.activityIndicator.startAnimating()
         
+        // Fetch Data on a Background Thread
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            OnTheMapClient.sharedInstance().getStudentLocations({ (error) -> Void in
+                if error != nil {
+                    // TODO: Add an Alert to inform the user that Student Locations failed to Download
+                    println("Error downloading student locations: \(error)")
+                }
+            })
+            
+            // Main Thread
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.activityIndicator.stopAnimating();
+            })
+        })
     }
 
 }

@@ -22,6 +22,7 @@ class OnTheMapClient {
     var linkedIInURL: String? = nil
     var websiteURL: String? = nil
     var imageURL: String? = nil
+    var objectID: String? = nil
     
     // MARK: HTTP POST Methods
     func authenticateUser(#username: String, password: String, completionHandler:(success: Bool, result: AnyObject!, error: String?) -> Void) {
@@ -89,7 +90,6 @@ class OnTheMapClient {
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) // subset of data response
                 var jsonError: NSError? = nil
                 let jsonResult = NSJSONSerialization.JSONObjectWithData(newData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as? NSDictionary
-                println(jsonResult)
                 
                 if let result = jsonResult {
                     if let accountDictionary = result.valueForKey("account") as? [String: AnyObject] {
@@ -137,6 +137,7 @@ class OnTheMapClient {
             }else {
                 var parsingError: NSError? = nil
                 let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! [String:AnyObject]
+                completionHandler(success: true, result: parsedResult, error: nil)
             }
         }
         task.resume()
@@ -205,15 +206,6 @@ class OnTheMapClient {
                         mString: result["mapString"] as! String,
                         mURL: result["mediaURL"] as! String)
                     
-                    
-//                    var studentInfo = StudentInformation()
-//                    studentInfo.firstName = result["firstName"] as! String
-//                    studentInfo.lastName = result["lastName"] as! String
-//                    studentInfo.latitude = result["latitude"] as! CLLocationDegrees
-//                    studentInfo.longitude = result["longitude"] as! CLLocationDegrees
-//                    studentInfo.mapString = result["mapString"] as! String
-//                    studentInfo.mediaURL = result["mediaURL"] as? String
-                    
                     self.studentLocations.append(studentInfo)
                 }
             }
@@ -242,6 +234,8 @@ class OnTheMapClient {
                         if results["objectId"] as! String != "" {
                             // Student Location Exists
                             self.locationExists = true
+                            // Store the Object ID in Order to Update Location using PUT Http Request
+                            self.objectID = results["objectId"] as? String
                         }else {
                             // Student Location Does not Exist
                             self.locationExists = false
@@ -259,9 +253,14 @@ class OnTheMapClient {
     // MARK: HTTP PUT Methods
     
     // TODO: Update Student Location 
-    func updateStudentLocation() {
+    // Required Parameter: Object ID
+    func updateStudentLocation(mapString: String, mediaURL: String, latitude: Double, longitude: Double, completionHandler: (success: Bool, result: AnyObject!, error: NSError?) -> Void) {
         
-        let urlString = "https://api.parse.com/1/classes/StudentLocation/\(self.userID!)"
+        let uniqueKey = self.userID!
+        let firstName = self.firstName!
+        let lastName = self.lastName!
+        
+        let urlString = "https://api.parse.com/1/classes/StudentLocation/\(self.objectID!)"
         let url = NSURL(string: urlString)
         let request = NSMutableURLRequest(URL: url!)
         
@@ -269,11 +268,16 @@ class OnTheMapClient {
         request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.HTTPBody = "{\"uniqueKey\": \"\(self.userID!)\", \"firstName\": \"Brad\", \"lastName\": \"Jones\",\"mapString\": \"South Beach, FL\", \"mediaURL\": \"https://techmeme.com\",\"latitude\": 25.7819, \"longitude\": 80.1363}".dataUsingEncoding(NSUTF8StringEncoding)
+        request.HTTPBody = "{\"uniqueKey\": \"\(self.userID!)\", \"firstName\": \"\(firstName)\", \"lastName\": \"\(lastName)\",\"mapString\": \"\(mapString)\", \"mediaURL\": \"\(mediaURL)\",\"latitude\": \(latitude), \"longitude\": \(longitude)}".dataUsingEncoding(NSUTF8StringEncoding)
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
-            if error != nil { // Handle error…
+            if error != nil { // Handle error
+                completionHandler(success: false, result: nil, error: error)
                 return
+            }else {
+                var jsonError: NSError? = nil
+                let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as? NSDictionary
+                completionHandler(success: true, result: parsedResult, error: nil)
             }
             println(NSString(data: data, encoding: NSUTF8StringEncoding))
         }

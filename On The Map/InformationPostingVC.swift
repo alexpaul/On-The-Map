@@ -108,7 +108,7 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
         geocoder.geocodeAddressString(self.studentLocationTextField?.text) { (placemarks, error) in
             
             if (error != nil) {
-                self.alertLocation()
+                self.alertGeoLocationData()
                 return
             }else {
                 var lat: CLLocationDegrees!
@@ -138,8 +138,15 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
         }
     }
     
-    func alertLocation() {
-        let alert = UIAlertController(title: "Bad Location Data", message: "Enter a valid Location", preferredStyle: UIAlertControllerStyle.Alert)
+    func alertGeoLocationData() {
+        let alert = UIAlertController(title: "Bad Geo Loocation Data", message: "Enter a valid Location", preferredStyle: UIAlertControllerStyle.Alert)
+        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
+        alert.addAction(action)
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func alertMediaURLRequired() {
+        let alert = UIAlertController(title: "Missing Media URL", message: "Media URL is Required", preferredStyle: UIAlertControllerStyle.Alert)
         let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
         alert.addAction(action)
         self.presentViewController(alert, animated: true, completion: nil)
@@ -149,6 +156,13 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
         
     }
     
+    func alertWhileModifyingStudentLocation(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
+        alert.addAction(action)
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
     func animateMapViewAndRelevantUIElements() {
         // Animate alpha/transparency of UI Elements during Geocoding
         UIView.animateWithDuration(0.8) {
@@ -156,8 +170,16 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
             self.findOnTheMapButton.alpha = 0.0
             self.promptTextView.alpha = 0.0
             
-            self.mapView.alpha = 1.0
+            // Toggle the Title of the Submit Button based on User Location Existing or Not
+            // In the case Location exist, Update
+            // If there's No existing Location, Submit a New Location
+            if OnTheMapClient.sharedInstance().locationExists! {
+                self.submitButton.setTitle("Update Location", forState: UIControlState.Normal)
+            }else {
+                self.submitButton.setTitle("Submit Location", forState: UIControlState.Normal)
+            }
             self.submitButton.alpha = 1.0
+            self.mapView.alpha = 1.0
             self.mediaURLTextField.alpha = 1.0
             self.browseLinksButton.alpha = 1.0
         }
@@ -165,30 +187,41 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
     
     @IBAction func submitButtonPressed(sender: UIButton) {
         
-        let latitude = self.locationCoord.latitude as Double
-        let longitude = self.locationCoord.longitude as Double
-        let mapString = self.studentLocationTextField.text
-        let mediaURL = self.mediaURLTextField.text
-        
-        println(OnTheMapClient.sharedInstance().locationExists)
-        
-        if let locationExist = OnTheMapClient.sharedInstance().locationExists {
-            if locationExist {
-                // TODO: Alert user that the Student Location Already Exist
-                println("Alert user that the Student Location Already Exist")
-            }else {
-                // Add the Student Location to Parse
-                println("Adding.......Student Location to Parse")
-                OnTheMapClient.sharedInstance().postStudentLocation(mapString, mediaURL: mediaURL, latitude: latitude, longitude: longitude) { (success, result, error) in
-                    if error != nil {
-                        // TODO: Add an Alert to inform the user that the POST Failed
-                        println("POST Failed with Error: \(error?.localizedDescription)")
+        if self.mediaURLTextField.text.isEmpty {
+            // Media URL is Required
+            self.alertMediaURLRequired()
+        }else {
+            let latitude = self.locationCoord.latitude as Double
+            let longitude = self.locationCoord.longitude as Double
+            let mapString = self.studentLocationTextField.text
+            let mediaURL = self.mediaURLTextField.text
+            
+            if let locationExist = OnTheMapClient.sharedInstance().locationExists {
+                if locationExist { // A Location Exist For the Student. Update!
+                    
+                    OnTheMapClient.sharedInstance().updateStudentLocation(mapString, mediaURL: mediaURL, latitude: latitude, longitude: longitude, completionHandler: { (success, result, error) -> Void in
+                        if error != nil {
+                            println("PUT Update Failed with error: \(error?.localizedDescription)")
+                            self.alertWhileModifyingStudentLocation("Updating Location", message: "\(error?.localizedDescription)")
+                        }else {
+                            self.alertWhileModifyingStudentLocation("Updating Location", message: "\(result)")
+                        }
+                    })
+                }else { // A Location Does Not Exist for the Student. Add!
+                    
+                    OnTheMapClient.sharedInstance().postStudentLocation(mapString, mediaURL: mediaURL, latitude: latitude, longitude: longitude) { (success, result, error) in
+                        if error != nil {
+                            println("POST Failed with error: \(error?.localizedDescription)")
+                            self.alertWhileModifyingStudentLocation("Adding Location", message: "\(error?.localizedDescription)")
+                        }else {
+                            self.alertWhileModifyingStudentLocation("Adding Location", message: "\(result)")
+                        }
                     }
                 }
             }
+
         }
         
     }
     
-
 }

@@ -9,6 +9,8 @@
 
 import UIKit
 import MapKit
+import FBSDKLoginKit
+import FBSDKCoreKit
 
 class MapLocationsViewController: UIViewController, MKMapViewDelegate {
     
@@ -72,8 +74,14 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate {
     // MARK: IBActions 
     
     @IBAction func logoutButtonPressed(sender: UIBarButtonItem) {
+        
+        // Logout of Udacity
         OnTheMapClient.sharedInstance().logoutUdacitySession()
         
+        // Logout of Facebook
+        FBSDKLoginManager().logOut()
+        
+        // Dismiss View Controller and Return to Login Screen
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     

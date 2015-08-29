@@ -24,68 +24,38 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var loginLabel: UILabel!
     @IBOutlet weak var accountLabel: UILabel!
     
-    
-    var facebookLoginButton: FBSDKLoginButton!
-    //var facebookLoginSuccess = false
+    // UIButtons
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var facebookLoginButton: UIButton!
     
     // MARK: View Life Cycles
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        // TODO: may have to done explicity on the Main Thread
         self.usernameTextField.text = ""
         self.passwordTextField.text = ""
+        
+        if let token = FBSDKAccessToken.currentAccessToken()?.tokenString {
+            println("token present")
+        }else {
+            println("no token present")
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Customize Apperance of UI Elements 
-        //
-        let textAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor(), NSFontAttributeName : UIFont(name: "Roboto-Regular", size: 18)!]
+        // Customize Apperance of UI Elements
+        self.customizeAppearanceForUIElements()
         
-        // UITextField 
-        self.usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes: textAttributes)
-        self.usernameTextField.defaultTextAttributes = textAttributes
-        self.passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: textAttributes)
-        self.passwordTextField.defaultTextAttributes = textAttributes
-
+        // Check for an existing Facebook Token
+        // This eliminates an unnecessary app switch to Facebook if user already granted permissions
+        // Then Authenticate the User and Complete Login if Successful
+        self.getCurrentTokenAndAuthenticateFacebookUser()
         
-        // UILabel 
-        self.loginLabel.textColor = UIColor.whiteColor()
-        self.loginLabel.font = UIFont(name: "Roboto-Regular", size: 18)
-        self.accountLabel.textColor = UIColor.whiteColor()
-        self.accountLabel.font = UIFont(name: "Roboto-Regular", size: 18)
-        
-        // Create and Add Facebook Login Button
-        self.facebookLoginButton = FBSDKLoginButton()
-        let viewCenterPoint = self.view.center
-        self.facebookLoginButton.center = CGPointMake(viewCenterPoint.x, viewCenterPoint.y + 150)
-        self.view.addSubview(self.facebookLoginButton)
-        
-        
-//        // Check for existing Facebook Tokens
-//        // This eliminates an unnecessary app switch to Facebook if user already granted permissions
-//        if let accessToken = FBSDKAccessToken.currentAccessToken()?.tokenString {
-//            // Authenticate Facebook User
-//            OnTheMapClient.sharedInstance().facebookAuthentication(accessToken) { (success, result, error) in
-//                // If there is an Access Token and Login is Successful
-//                // Go to Tab Bar Controller
-//                if success {
-//                    //self.facebookLoginSuccess = true
-//                    self.completeLogin()
-//                    
-//                }else {
-//                    //self.facebookLoginSuccess = false
-//                    self.loginAlertMessage(error)
-//                }
-//            }
-//        } else {
-//            println("Error locating token")
-//        }
-//        
-//        self.facebookLoginButton.addTarget(self, action: "facebookLoginButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        self.facebookLoginButton.addTarget(self, action: "facebookLoginButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
     // MARK: IBActions
@@ -130,6 +100,54 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func getCurrentTokenAndAuthenticateFacebookUser() {
+        if let accessToken = FBSDKAccessToken.currentAccessToken()?.tokenString {
+            // Authenticate Facebook User and Complete Login
+            OnTheMapClient.sharedInstance().facebookAuthentication(accessToken) { (success, result, error) in
+                // If there is an Access Token and Login is Successful
+                // Go to Tab Bar Controller
+                if success {
+                    // Complete Login
+                    self.completeLogin()
+                    
+                }else {
+                    self.loginAlertMessage(error)
+                }
+            }
+        } else {
+            println("Error locating token")
+        }
+    }
+    
+    func customizeAppearanceForUIElements() {
+        // UITextField
+        let textFieldAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor(), NSFontAttributeName : UIFont(name: "Roboto-Regular", size: 18)!]
+        self.usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes: textFieldAttributes)
+        self.usernameTextField.defaultTextAttributes = textFieldAttributes
+        self.passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: textFieldAttributes)
+        self.passwordTextField.defaultTextAttributes = textFieldAttributes
+        // UILabel
+        let labelFont = UIFont(name: "Roboto-Regular", size: 18)
+        self.loginLabel.textColor = UIColor.whiteColor()
+        self.loginLabel.font = labelFont
+        self.accountLabel.textColor = UIColor.whiteColor()
+        self.accountLabel.font = labelFont
+        // UIButton
+        let buttonFont = UIFont(name: "Roboto-Regular", size: 16)
+        self.loginButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        self.loginButton.titleLabel?.font = buttonFont
+        self.signUpButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        self.signUpButton.titleLabel?.font = buttonFont
+        self.facebookLoginButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        self.facebookLoginButton.titleLabel?.font = buttonFont
+        
+        // Create and Add Facebook Login Button
+//        self.facebookLoginButton = FBSDKLoginButton()
+//        let viewCenterPoint = self.view.center
+//        self.facebookLoginButton.center = CGPointMake(viewCenterPoint.x, viewCenterPoint.y + 150)
+//        self.view.addSubview(self.facebookLoginButton)        
+    }
+    
     // MARK: Alert Methods 
     
     func missingCredentialsAlertMessage () {
@@ -148,11 +166,23 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func facebookLoginButtonPressed() {
         
-        if self.facebookLoginButton.selected { // "log out"
-            self.completeLogin()
-        }else { // "log in with facebook"
+        let facebookPerrmisssions = ["public_profile", "email", "user_friends"]
+        let loginManager = FBSDKLoginManager()
+        loginManager.logInWithReadPermissions(facebookPerrmisssions, handler: { (result: FBSDKLoginManagerLoginResult!, error: NSError!) -> Void in
+            if error != nil {
+                // Process Error
+                println("Facebook Error: \(error.description)")
+            }else if result.isCancelled {
+                // Handle Cancellations
+                println("Handle Cancellations")
+            }else {
+                // Logged In
+                println("Logged In")
 
-        }
+                // Get Current Token and Authenticate Facebook User
+                self.getCurrentTokenAndAuthenticateFacebookUser()
+            }
+        })
     }
     
 
