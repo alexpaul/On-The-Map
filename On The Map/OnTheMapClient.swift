@@ -172,7 +172,7 @@ class OnTheMapClient {
         task.resume()
     }
     
-    func getStudentLocations(completionHandler: (error: NSError?) -> Void) {
+    func getStudentLocations(completionHandler: (success: Bool, result: Int?, error: NSError?) -> Void) {
         
         // Query if Student Location Already Exist
         // If it Exist, Alert User that Location Exist in Parse
@@ -192,22 +192,42 @@ class OnTheMapClient {
             
             if let err = jsonError {
                 println("Error - JSON Parsing")
-                completionHandler(error: err)
+                completionHandler(success: false, result: nil, error: err)
                 return
             }else {
                 // Save the downloaded Student locations to an Array of StudentInformation Structs
-                let resultsDictionary = parsedResult["results"] as! [[String: AnyObject]]
-                
-                for result in resultsDictionary {
-                    var studentInfo = StudentInformation(fName: result["firstName"] as! String,
-                        lName: result["lastName"] as! String,
-                        lat: result["latitude"] as! CLLocationDegrees,
-                        long: result["longitude"] as! CLLocationDegrees,
-                        mString: result["mapString"] as! String,
-                        mURL: result["mediaURL"] as! String)
-                    
-                    self.studentLocations.append(studentInfo)
+                if let resultsDictionary = parsedResult["results"] as? [[String: AnyObject]] {
+                    for result in resultsDictionary {
+                        var studentInfo = StudentInformation(fName: result["firstName"] as! String,
+                            lName: result["lastName"] as! String,
+                            lat: result["latitude"] as! CLLocationDegrees,
+                            long: result["longitude"] as! CLLocationDegrees,
+                            mString: result["mapString"] as! String,
+                            mURL: result["mediaURL"] as! String)
+                        
+                        self.studentLocations.append(studentInfo)
+                    }
+                    completionHandler(success: true, result: self.studentLocations.count, error: nil)
+                }else {
+                    println("No results Getting Student Locations")
+                    completionHandler(success: true, result: self.studentLocations.count, error: nil)
                 }
+                
+                
+                
+                
+//                let resultsDictionary = parsedResult["results"] as! [[String: AnyObject]]
+//                
+//                for result in resultsDictionary {
+//                    var studentInfo = StudentInformation(fName: result["firstName"] as! String,
+//                        lName: result["lastName"] as! String,
+//                        lat: result["latitude"] as! CLLocationDegrees,
+//                        long: result["longitude"] as! CLLocationDegrees,
+//                        mString: result["mapString"] as! String,
+//                        mURL: result["mediaURL"] as! String)
+//                    
+//                    self.studentLocations.append(studentInfo)
+//                }
             }
         }
         

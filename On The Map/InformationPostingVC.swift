@@ -158,7 +158,9 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
     
     func alertWhileModifyingStudentLocation(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
+        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
         alert.addAction(action)
         self.presentViewController(alert, animated: true, completion: nil)
     }
@@ -218,6 +220,13 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
                         }
                     }
                 }
+                
+                // Get Updated Location Data from Parse
+                OnTheMapClient.sharedInstance().getStudentLocations({ (success, result, error) -> Void in
+                    if (error != nil) {
+                        println("Getting Student Locations Error: \(error?.localizedDescription)")
+                    }
+                })
             }
 
         }

@@ -12,17 +12,22 @@ import MapKit
 import FBSDKLoginKit
 import FBSDKCoreKit
 
-class MapLocationsViewController: UIViewController, MKMapViewDelegate {
+class MapLocationsViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var studentLocations = [StudentInformation]()
     
+    // Array will hold Annotations
+    var annotations = [MKPointAnnotation]()
+    
     // MARK: View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        println("viewDidLoad")
         
         // Create two (2) Button Bar Items on the Right Side of the Navigation Bar
         let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Refresh, target: self, action: "refreshButtonPressed")
@@ -42,33 +47,20 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate {
             self.studentLocations = OnTheMapClient.sharedInstance().studentLocations
                         
             // Array will hold Annotations
-            var annotations = [MKPointAnnotation]()
+            //var annotations = [MKPointAnnotation]()
             
-            for location in self.studentLocations {
-                
-                let lat = location.latitude as Double
-                let long = location.longitude as Double
-                
-                
-                let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                
-                let first = location.firstName!
-                let last = location.lastName!
-                
-                // Create the annotation and set its coordinate, title and subtitle properties
-                let annotation = MKPointAnnotation()
-                annotation.title = first + " " + last
-                annotation.coordinate = coordinate
-                
-                if let mediaURL = location.mediaURL {
-                    annotation.subtitle = mediaURL
-                }
-
-                annotations.append(annotation)
-            }
-            self.mapView.addAnnotations(annotations)
+            // Create Location Annotations
+            self.createLocationAnnotations()
+            
+            // Add Annotations to the Map View
+            self.mapView.addAnnotations(self.annotations)
         }
 
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        println("viewWillAppear")
     }
     
     // MARK: IBActions 
@@ -83,6 +75,13 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate {
         
         // Dismiss View Controller and Return to Login Screen
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // MARK: CLLocation Manager Delegate 
+    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if (status == CLAuthorizationStatus.AuthorizedAlways || status == CLAuthorizationStatus.AuthorizedWhenInUse) {
+            manager.startUpdatingLocation()
+        }
     }
     
     
@@ -113,7 +112,45 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+    func mapView(mapView: MKMapView!, didUpdateUserLocation userLocation: MKUserLocation!) {
+        
+        println("didUpdateUserLocation")
+        
+        var mapRegion = MKCoordinateRegion()
+        mapRegion.center = self.mapView.userLocation.coordinate
+        mapRegion.span.latitudeDelta = 0.2
+        mapRegion.span.longitudeDelta = 0.2
+        
+        self.mapView.setRegion(mapRegion, animated: true)
+    }
+    
     // MARK: Helper Methods 
+    
+    func createLocationAnnotations() {
+        for location in self.studentLocations {
+            
+            let lat = location.latitude as Double
+            let long = location.longitude as Double
+            
+            
+            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+            
+            let first = location.firstName!
+            let last = location.lastName!
+            
+            // Create the annotation and set its coordinate, title and subtitle properties
+            let annotation = MKPointAnnotation()
+            annotation.title = first + " " + last
+            annotation.coordinate = coordinate
+            
+            if let mediaURL = location.mediaURL {
+                annotation.subtitle = mediaURL
+            }
+            
+            self.annotations.append(annotation)
+        }
+
+    }
     
     func postButtonPressed() {
         let infoPostVC = self.storyboard?.instantiateViewControllerWithIdentifier("InformationPostingVC") as! InformationPostingVC
@@ -121,22 +158,26 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate {
     }
     
     func refreshButtonPressed() {
+        // Remove Annotations from Map View
+        self.mapView.removeAnnotations(self.annotations)
+        
+        // Clear Student Locations 
+        self.studentLocations.removeAll(keepCapacity: false)
+        //OnTheMapClient.sharedInstance().studentLocations.removeAll(keepCapacity: false)
+        
         self.activityIndicator.startAnimating()
         
-        // Fetch Data on a Background Thread
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            OnTheMapClient.sharedInstance().getStudentLocations({ (error) -> Void in
-                if error != nil {
-                    // TODO: Add an Alert to inform the user that Student Locations failed to Download
-                    println("Error downloading student locations: \(error)")
-                }
-            })
-            
-            // Main Thread
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.activityIndicator.stopAnimating();
-            })
-        })
+        // Get the Students Locations from the Parse API
+        self.studentLocations = OnTheMapClient.sharedInstance().studentLocations
+        
+        // Create Location Annotations
+        self.createLocationAnnotations()
+        
+        // Add Annotations to the Map View
+        self.mapView.addAnnotations(self.annotations)
+        
+        self.activityIndicator.stopAnimating()
+        
     }
     
 }

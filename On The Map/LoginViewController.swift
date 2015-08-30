@@ -87,10 +87,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func completeLogin() {
         
         // Download the Students Locations from Parse
-        OnTheMapClient.sharedInstance().getStudentLocations { (error) in
+        OnTheMapClient.sharedInstance().getStudentLocations { (success, result, error) in
             if error != nil {
                 // TODO: Add an Alert to inform the user that Student Locations failed to Download
                 println("Error downloading student locations: \(error)")
+            }else {
+                if let res = result {
+                    println("result: \(result!) student locations")
+                }else {
+                    println("Error retrieving student locations")
+                }
+                
             }
         }
         
