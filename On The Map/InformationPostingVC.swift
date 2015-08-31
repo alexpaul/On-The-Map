@@ -12,6 +12,9 @@ import MapKit
 
 class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDelegate {
     
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     @IBOutlet weak var studentLocationTextField: UITextField!
     @IBOutlet weak var findOnTheMapButton: UIButton!
     @IBOutlet weak var promptTextView: UITextView!
@@ -50,6 +53,7 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
     }
     
     @IBAction func findOnTheMapButtonPressed(sender: UIButton) {
+        self.activityIndicator.startAnimating()
         processPlacemarkUsingStudentLocation()
     }
     
@@ -135,6 +139,8 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
                 // Animate UI Elements during geocoding
                 // Show MapView and other Relevant UI Elements
                 self.animateMapViewAndRelevantUIElements()
+                
+                self.activityIndicator.stopAnimating()
             }
         }
     }
