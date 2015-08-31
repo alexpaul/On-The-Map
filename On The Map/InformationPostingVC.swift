@@ -40,6 +40,12 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
         }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.mediaURLTextField.text = "http://www."
+    }
+    
     // MARK: IBActions
     
     @IBAction func cancelButtonPressed(sender: UIButton) {
@@ -221,12 +227,6 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
                     }
                 }
                 
-                // Get Updated Location Data from Parse
-                OnTheMapClient.sharedInstance().getStudentLocations({ (success, result, error) -> Void in
-                    if (error != nil) {
-                        println("Getting Student Locations Error: \(error?.localizedDescription)")
-                    }
-                })
             }
 
         }

@@ -337,27 +337,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="gOg-gF-rJ9">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="cuq-5v-rbQ">
-                                    <rect key="frame" x="0.0" y="136" width="600" height="329"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <subviews>
-                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="D7c-0A-hMt">
-                                            <rect key="frame" x="282" y="146" width="37" height="37"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="37" id="OjX-MF-bXq"/>
-                                                <constraint firstAttribute="height" constant="37" id="t2I-e1-8nC"/>
-                                            </constraints>
-                                            <color key="color" cocoaTouchSystemColor="darkTextColor"/>
-                                        </activityIndicatorView>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="D7c-0A-hMt" secondAttribute="trailing" constant="281" id="Tiy-uP-Rta"/>
-                                        <constraint firstItem="D7c-0A-hMt" firstAttribute="leading" secondItem="cuq-5v-rbQ" secondAttribute="leading" constant="282" id="V4D-uS-YPk"/>
-                                        <constraint firstAttribute="bottom" secondItem="D7c-0A-hMt" secondAttribute="bottom" constant="146" id="bs7-5g-Afn"/>
-                                        <constraint firstItem="D7c-0A-hMt" firstAttribute="top" secondItem="cuq-5v-rbQ" secondAttribute="top" constant="146" id="jc4-cN-eQi"/>
-                                    </constraints>
-                                </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentLocationCell" textLabel="sEg-Dl-Hpm" detailTextLabel="nOB-CV-EIu" style="IBUITableViewCellStyleSubtitle" id="EKn-4w-Xew">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -385,13 +364,24 @@
                                     <outlet property="delegate" destination="IRc-62-OkC" id="seq-31-Wgy"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Nyo-3k-Gvg">
+                                <rect key="frame" x="282" y="72" width="37" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="37" id="02r-iH-BH5"/>
+                                    <constraint firstAttribute="height" constant="37" id="ZRZ-X9-2ae"/>
+                                </constraints>
+                                <color key="color" cocoaTouchSystemColor="darkTextColor"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="gOg-gF-rJ9" firstAttribute="top" secondItem="VlZ-YG-tl2" secondAttribute="topMargin" id="AD0-Ld-fl3"/>
                             <constraint firstItem="gOg-gF-rJ9" firstAttribute="leading" secondItem="VlZ-YG-tl2" secondAttribute="leadingMargin" constant="-16" id="DzA-pI-2o2"/>
+                            <constraint firstItem="Nyo-3k-Gvg" firstAttribute="centerX" secondItem="gOg-gF-rJ9" secondAttribute="centerX" constant="0.5" id="I8b-2f-bgf"/>
                             <constraint firstItem="gOg-gF-rJ9" firstAttribute="bottom" secondItem="VlZ-YG-tl2" secondAttribute="bottomMargin" id="mDE-6x-var"/>
+                            <constraint firstItem="Nyo-3k-Gvg" firstAttribute="centerY" secondItem="gOg-gF-rJ9" secondAttribute="centerY" constant="-209.5" id="p1M-hD-163"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gOg-gF-rJ9" secondAttribute="trailing" constant="-16" id="pRF-5R-XCB"/>
+                            <constraint firstItem="Nyo-3k-Gvg" firstAttribute="top" secondItem="qyd-D6-7sT" secondAttribute="bottom" constant="8" id="rON-ab-Yv4"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="On The Map" id="EI6-Z4-Rpf">
@@ -402,7 +392,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="activityIndicator" destination="D7c-0A-hMt" id="MJ2-ie-8TG"/>
+                        <outlet property="activityIndicator" destination="Nyo-3k-Gvg" id="V5j-xH-cxv"/>
+                        <outlet property="tableView" destination="gOg-gF-rJ9" id="OlA-lo-2L7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kVo-Kj-X1a" userLabel="First Responder" sceneMemberID="firstResponder"/>

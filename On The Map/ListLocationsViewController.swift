@@ -15,6 +15,9 @@ class ListLocationsViewController: UIViewController, UITableViewDataSource, UITa
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var tableView: UITableView!
+    
+    
     // MARK: View Life Cycle 
     
     override func viewDidLoad() {
@@ -75,20 +78,32 @@ class ListLocationsViewController: UIViewController, UITableViewDataSource, UITa
     func refreshButtonPressed() {
         self.activityIndicator.startAnimating()
         
-        // Fetch Data on a Background Thread
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            OnTheMapClient.sharedInstance().getStudentLocations({ (success, result, error) -> Void in
-                if error != nil {
-                    // TODO: Add an Alert to inform the user that Student Locations failed to Download
-                    println("Error downloading student locations: \(error)")
+        // Download the Students Locations from Parse
+        OnTheMapClient.sharedInstance().getStudentLocations { (success, result, error) in
+            if error != nil {
+                // TODO: Add an Alert to inform the user that Student Locations failed to Download
+                println("Error downloading student locations: \(error)")
+            }else {
+                if let res = result {
+                    println("result: \(result!) student locations")
+                }else {
+                    println("Error retrieving student locations")
                 }
-            })
-            
-            // Main Thread
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.activityIndicator.stopAnimating();
-            })
-        })
+            }
+        }
+        
+        let delay = 4.5 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        
+        // Clear Student Locations
+        OnTheMapClient.sharedInstance().studentLocations.removeAll(keepCapacity: false)
+        
+        dispatch_after(time, dispatch_get_main_queue()) {
+            self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
+        }
+
+        
     }
 
 }

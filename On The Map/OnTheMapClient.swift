@@ -212,22 +212,6 @@ class OnTheMapClient {
                     println("No results Getting Student Locations")
                     completionHandler(success: true, result: self.studentLocations.count, error: nil)
                 }
-                
-                
-                
-                
-//                let resultsDictionary = parsedResult["results"] as! [[String: AnyObject]]
-//                
-//                for result in resultsDictionary {
-//                    var studentInfo = StudentInformation(fName: result["firstName"] as! String,
-//                        lName: result["lastName"] as! String,
-//                        lat: result["latitude"] as! CLLocationDegrees,
-//                        long: result["longitude"] as! CLLocationDegrees,
-//                        mString: result["mapString"] as! String,
-//                        mURL: result["mediaURL"] as! String)
-//                    
-//                    self.studentLocations.append(studentInfo)
-//                }
             }
         }
         
