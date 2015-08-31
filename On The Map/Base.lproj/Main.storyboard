@@ -172,6 +172,14 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="m8d-yz-Qpt">
+                                <rect key="frame" x="282" y="281" width="37" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="37" id="Aqg-7Y-uBx"/>
+                                    <constraint firstAttribute="width" constant="37" id="hkX-n9-Cpd"/>
+                                </constraints>
+                                <color key="color" cocoaTouchSystemColor="darkTextColor"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -191,6 +199,7 @@
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="jX5-Yd-MAa" secondAttribute="bottom" constant="20" id="bvL-28-UP8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="5cn-Xj-4wV" secondAttribute="trailing" constant="224" id="cae-PH-h45"/>
                             <constraint firstItem="zZn-C6-fqF" firstAttribute="top" secondItem="pAG-co-buz" secondAttribute="bottom" constant="29" id="hNW-mS-LBi"/>
+                            <constraint firstAttribute="centerX" secondItem="m8d-yz-Qpt" secondAttribute="centerX" constant="-0.5" id="hvh-pJ-kfX"/>
                             <constraint firstItem="zZn-C6-fqF" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="iEz-OL-c3v"/>
                             <constraint firstItem="5cn-Xj-4wV" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" id="kEU-ur-SA7"/>
                             <constraint firstItem="jX5-Yd-MAa" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="kPj-GK-Qy0"/>
@@ -200,6 +209,7 @@
                             <constraint firstItem="zZn-C6-fqF" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="pTq-hk-amJ"/>
                             <constraint firstItem="5Eh-DF-VJa" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="221" id="pW5-hS-x0Z"/>
                             <constraint firstItem="adm-6d-RTq" firstAttribute="top" secondItem="zZn-C6-fqF" secondAttribute="bottom" constant="8" id="pha-nz-yJH"/>
+                            <constraint firstAttribute="centerY" secondItem="m8d-yz-Qpt" secondAttribute="centerY" constant="0.5" id="pmz-Bg-jJG"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="jX5-Yd-MAa" secondAttribute="bottom" constant="60" id="rri-Km-bB8"/>
                             <constraint firstItem="5Eh-DF-VJa" firstAttribute="top" secondItem="5cn-Xj-4wV" secondAttribute="bottom" constant="8" id="ujz-et-RoV"/>
                             <constraint firstAttribute="centerX" secondItem="5cn-Xj-4wV" secondAttribute="centerX" id="xh7-RR-cv2"/>
@@ -222,6 +232,7 @@
                     </view>
                     <connections>
                         <outlet property="accountLabel" destination="XdC-a2-nOt" id="lxJ-L2-Yvh"/>
+                        <outlet property="activityIndicator" destination="m8d-yz-Qpt" id="kom-Nw-Kdg"/>
                         <outlet property="facebookLoginButton" destination="jX5-Yd-MAa" id="tF8-tf-tpn"/>
                         <outlet property="loginButton" destination="zZn-C6-fqF" id="IzU-iW-8bh"/>
                         <outlet property="loginLabel" destination="5Eh-DF-VJa" id="z0d-0C-Vut"/>
@@ -591,7 +602,7 @@
             </objects>
             <point key="canvasLocation" x="3430" y="334"/>
         </scene>
-        <!--Browse Links View Controller-->
+        <!--Choose a Link-->
         <scene sceneID="4eG-1f-H0P">
             <objects>
                 <viewController storyboardIdentifier="BrowseLinksViewController" id="mMa-Cj-2N9" customClass="BrowseLinksViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
@@ -628,7 +639,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="fFs-is-4J2" secondAttribute="trailing" constant="-16" id="llW-3a-fgA"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="lou-5z-5zF">
+                    <navigationItem key="navigationItem" title="Choose a Link" id="lou-5z-5zF">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ebz-ET-rJE">
                             <connections>
                                 <action selector="cancelButtonPressed:" destination="mMa-Cj-2N9" id="6bh-MO-yhh"/>
@@ -636,8 +647,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="qEO-zU-NB0">
                             <connections>
-                                <action selector="done:" destination="mMa-Cj-2N9" id="vPw-LJ-DTf"/>
-                                <segue destination="eBU-0t-c9A" kind="unwind" unwindAction="unwindToInformationPostingVC:" id="5lL-F9-ydc"/>
+                                <segue destination="eBU-0t-c9A" kind="unwind" unwindAction="unwindToInformationPostingVC:" id="51x-5D-0F5"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

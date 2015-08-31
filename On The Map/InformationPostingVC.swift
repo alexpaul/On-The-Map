@@ -32,11 +32,8 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        println("viewWillAppear")
-        
         if let link = self.selectedLink {
-            println("selected link: \(link)")
-            self.mediaURLTextField.text = link
+            self.mediaURLTextField.text = "http://www." + link
         }
     }
     
@@ -65,17 +62,15 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
         let viewControllers = [browseLinksVC!]
 
         // Pass the Links Data to the Browse Links View Controller
-        browseLinksVC?.links = self.links
+        //browseLinksVC?.links = self.links
         browseLinksNavController?.setViewControllers(viewControllers, animated: true)
         
         self.presentViewController(browseLinksNavController!, animated: true, completion: nil)
     }
     
     @IBAction func unwindToInformationPostingVC(sender: UIStoryboardSegue) {
-        println("unwind segue")
         let browseLinksVC = sender.sourceViewController as! BrowseLinksViewController
         self.selectedLink = browseLinksVC.selectedLink
-        println("link in unwind segue: \(self.selectedLink)")
     }
     
     

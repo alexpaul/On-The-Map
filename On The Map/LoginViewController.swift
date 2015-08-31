@@ -14,7 +14,11 @@ import FBSDKCoreKit
 let USERNAME = "username" // email for the Udacity Student
 let PASSWORD = "password" // password
 
+
+
 class LoginViewController: UIViewController, UITextFieldDelegate {
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // UITextFields
     @IBOutlet weak var usernameTextField: UITextField!
@@ -102,6 +106,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
         
         dispatch_async(dispatch_get_main_queue()) {
+            self.activityIndicator.stopAnimating()
+            
+            // Create and Present Tab View Controller. 
+            // Map Locations VC will be the initial view
             let tabBarController = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarController") as! UITabBarController
             self.presentViewController(tabBarController, animated: true, completion: nil)
         }
@@ -109,6 +117,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func getCurrentTokenAndAuthenticateFacebookUser() {
         if let accessToken = FBSDKAccessToken.currentAccessToken()?.tokenString {
+            
+            self.activityIndicator.startAnimating()
+            
             // Authenticate Facebook User and Complete Login
             OnTheMapClient.sharedInstance().facebookAuthentication(accessToken) { (success, result, error) in
                 // If there is an Access Token and Login is Successful

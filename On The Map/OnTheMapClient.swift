@@ -167,6 +167,8 @@ class OnTheMapClient {
                 self.linkedIInURL = userDictionary["linked_in"] as? String
                 self.websiteURL = userDictionary["website_url"] as? String
                 self.imageURL = userDictionary["_image_url"] as? String
+                
+                println(parsedResult)
             }
         }
         task.resume()
