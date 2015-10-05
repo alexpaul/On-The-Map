@@ -186,6 +186,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         let facebookPerrmisssions = ["public_profile", "email", "user_friends"]
         let loginManager = FBSDKLoginManager()
+        
         loginManager.logInWithReadPermissions(facebookPerrmisssions, handler: { (result: FBSDKLoginManagerLoginResult!, error: NSError!) -> Void in
             if error != nil {
                 // Process Error

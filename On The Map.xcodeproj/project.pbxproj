@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		573BD3C01B76E93000552C0B /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573BD3BF1B76E93000552C0B /* StudentInformation.swift */; };
-		573BD3C31B77AA2F00552C0B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573BD3C21B77AA2F00552C0B /* FBSDKCoreKit.framework */; };
-		573BD3C51B77B26A00552C0B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573BD3C41B77B26A00552C0B /* FBSDKLoginKit.framework */; };
 		573BD3C71B7CA2B800552C0B /* BrowseLinksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573BD3C61B7CA2B800552C0B /* BrowseLinksViewController.swift */; };
+		5740500C1BC210AC0022DCA8 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5740500A1BC210AC0022DCA8 /* FBSDKCoreKit.framework */; };
+		5740500D1BC210AC0022DCA8 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5740500B1BC210AC0022DCA8 /* FBSDKLoginKit.framework */; };
 		57760DC91B8F18B100503E0F /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57760DC61B8F16C800503E0F /* Roboto-Medium.ttf */; };
 		57760DCA1B8F18B600503E0F /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57760DC71B8F16C800503E0F /* Roboto-Regular.ttf */; };
 		57760DCB1B8F18BC00503E0F /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57760DC81B8F16C800503E0F /* Roboto-Thin.ttf */; };
@@ -40,9 +40,9 @@
 
 /* Begin PBXFileReference section */
 		573BD3BF1B76E93000552C0B /* StudentInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
-		573BD3C21B77AA2F00552C0B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		573BD3C41B77B26A00552C0B /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		573BD3C61B7CA2B800552C0B /* BrowseLinksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowseLinksViewController.swift; sourceTree = "<group>"; };
+		5740500A1BC210AC0022DCA8 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		5740500B1BC210AC0022DCA8 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		57760DC61B8F16C800503E0F /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		57760DC71B8F16C800503E0F /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		57760DC81B8F16C800503E0F /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
@@ -70,8 +70,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				577EBA381B6EA6B5003BD99D /* MapKit.framework in Frameworks */,
-				573BD3C31B77AA2F00552C0B /* FBSDKCoreKit.framework in Frameworks */,
-				573BD3C51B77B26A00552C0B /* FBSDKLoginKit.framework in Frameworks */,
+				5740500C1BC210AC0022DCA8 /* FBSDKCoreKit.framework in Frameworks */,
+				5740500D1BC210AC0022DCA8 /* FBSDKLoginKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,8 +88,8 @@
 		573BD3C11B77A9E300552C0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				573BD3C41B77B26A00552C0B /* FBSDKLoginKit.framework */,
-				573BD3C21B77AA2F00552C0B /* FBSDKCoreKit.framework */,
+				5740500A1BC210AC0022DCA8 /* FBSDKCoreKit.framework */,
+				5740500B1BC210AC0022DCA8 /* FBSDKLoginKit.framework */,
 				577EBA371B6EA6B4003BD99D /* MapKit.framework */,
 			);
 			name = Frameworks;
@@ -419,6 +419,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/alexpaul/Documents/FacebookSDK,
+					"$(PROJECT_DIR)/On",
+					The,
+					Map,
 				);
 				INFOPLIST_FILE = "On The Map/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -433,6 +436,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/alexpaul/Documents/FacebookSDK,
+					"$(PROJECT_DIR)/On",
+					The,
+					Map,
 				);
 				INFOPLIST_FILE = "On The Map/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
