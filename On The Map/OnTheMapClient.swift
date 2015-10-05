@@ -199,16 +199,23 @@ class OnTheMapClient {
             }else {
                 // Save the downloaded Student locations to an Array of StudentInformation Structs
                 if let resultsDictionary = parsedResult["results"] as? [[String: AnyObject]] {
+                    
                     for result in resultsDictionary {
-                        var studentInfo = StudentInformation(fName: result["firstName"] as! String,
-                            lName: result["lastName"] as! String,
-                            lat: result["latitude"] as! CLLocationDegrees,
-                            long: result["longitude"] as! CLLocationDegrees,
-                            mString: result["mapString"] as! String,
-                            mURL: result["mediaURL"] as! String)
-                        
+                        var studentInfo = StudentInformation(studentInfoDictionary: result)
                         self.studentLocations.append(studentInfo)
                     }
+                    
+                    
+//                    for result in resultsDictionary {
+//                        var studentInfo = StudentInformation(fName: result["firstName"] as! String,
+//                            lName: result["lastName"] as! String,
+//                            lat: result["latitude"] as! CLLocationDegrees,
+//                            long: result["longitude"] as! CLLocationDegrees,
+//                            mString: result["mapString"] as! String,
+//                            mURL: result["mediaURL"] as! String)
+//                        
+//                        self.studentLocations.append(studentInfo)
+//                    }
                     completionHandler(success: true, result: self.studentLocations.count, error: nil)
                 }else {
                     println("No results Getting Student Locations")

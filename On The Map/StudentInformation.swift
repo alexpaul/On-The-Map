@@ -33,5 +33,15 @@ struct StudentInformation {
         mapString = mString
         mediaURL = mURL
     }
+    
+    init(studentInfoDictionary: [String: AnyObject]) {
+        let result = studentInfoDictionary
+        firstName = result["firstName"] as! String
+        lastName = result["lastName"] as! String
+        latitude = result["latitude"] as! CLLocationDegrees
+        longitude = result["longitude"] as! CLLocationDegrees
+        mapString = result["mapString"] as! String
+        mediaURL = result["mediaURL"] as? String
+    }
 
 }
