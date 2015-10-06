@@ -33,6 +33,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var facebookLoginButton: UIButton!
     
+    @IBOutlet weak var udacityImageView: UIImageView!
+    
+    
     // MARK: View Life Cycles
     
     override func viewWillAppear(animated: Bool) {
@@ -68,6 +71,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         if usernameTextField.text == "" && passwordTextField.text == "" {
             self.missingCredentialsAlertMessage()
+            self.shakeAnimation()
         } else {
             OnTheMapClient.sharedInstance().authenticateUser(username: self.usernameTextField.text, password: self.passwordTextField.text) { (success, result, error) in
                 
@@ -75,7 +79,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     self.completeLogin()
                 }else {
                     dispatch_async(dispatch_get_main_queue()) {
+                        self.shakeAnimation()
                         self.loginAlertMessage(error)
+
                     }
                 }
             }
@@ -92,16 +98,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         // Download the Students Locations from Parse
         OnTheMapClient.sharedInstance().getStudentLocations { (success, result, error) in
-            if error != nil {
-                // TODO: Add an Alert to inform the user that Student Locations failed to Download
-                println("Error downloading student locations: \(error)")
-            }else {
-                if let res = result {
-                    println("result: \(result!) student locations")
-                }else {
-                    println("Error retrieving student locations")
-                }
-                
+            if (error != nil) {
+                self.downloadAlertMessage(error)
             }
         }
         
@@ -111,7 +109,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             // Create and Present Tab View Controller. 
             // Map Locations VC will be the initial view
             let tabBarController = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarController") as! UITabBarController
-            self.presentViewController(tabBarController, animated: true, completion: nil)
+            self.presentViewController(tabBarController, animated: true, completion: { () -> Void in
+                
+            })
         }
     }
     
@@ -168,6 +168,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: Alert Methods 
     
+    func shakeAnimation() {
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.07
+        animation.repeatCount = 4
+        animation.autoreverses = true
+        animation.fromValue = NSValue(CGPoint: CGPointMake(self.view.center.x + 10, self.view.center.y))
+        self.view.layer.addAnimation(animation, forKey: "position")
+    }
+    
     func missingCredentialsAlertMessage () {
         let alertController = UIAlertController(title: "Missing Login Credentials", message: "Username and Password are Required", preferredStyle: UIAlertControllerStyle.Alert)
         let alertAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
@@ -177,6 +186,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func loginAlertMessage(error: String?) {
         let alertController = UIAlertController(title: "Login Alert", message: error, preferredStyle: UIAlertControllerStyle.Alert)
+        let alertAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
+        alertController.addAction(alertAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func downloadAlertMessage(error: NSError?) {
+        let alertController = UIAlertController(title: "Download Error", message: "\(error!)", preferredStyle: UIAlertControllerStyle.Alert)
         let alertAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
         alertController.addAction(alertAction)
         self.presentViewController(alertController, animated: true, completion: nil)

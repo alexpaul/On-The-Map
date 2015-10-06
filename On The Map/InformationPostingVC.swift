@@ -147,7 +147,9 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
     
     func alertGeoLocationData() {
         let alert = UIAlertController(title: "Bad Geo Loocation Data", message: "Enter a valid Location", preferredStyle: UIAlertControllerStyle.Alert)
-        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
+        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Cancel) { (UIAlertAction) -> Void in
+            self.activityIndicator.stopAnimating()
+        }
         alert.addAction(action)
         self.presentViewController(alert, animated: true, completion: nil)
     }

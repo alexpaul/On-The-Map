@@ -12,6 +12,7 @@ import MapKit
 
 class OnTheMapClient {
     
+    //private var studentLocations = [StudentInformation]()
     let session = NSURLSession.sharedSession()
     var sessionID: String? = nil
     var userID: String? = nil
@@ -181,7 +182,8 @@ class OnTheMapClient {
         // If it Does Not Exist, Add the Location to Parse
         self.queryStudentLocationExistInParse()
         
-        let url = "https://api.parse.com/1/classes/StudentLocation"
+        //let url = "https://api.parse.com/1/classes/StudentLocation"
+        let url = "https://api.parse.com/1/classes/StudentLocation?order=-updatedAt" // Order by updatedAt - Date
         let urlString = NSURL(string: url)!
         
         let request = NSMutableURLRequest(URL: urlString)
@@ -190,26 +192,64 @@ class OnTheMapClient {
         
         let task = session.dataTaskWithRequest(request) { (data, response, downloadError) in
             var jsonError: NSError? = nil
-            let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as! [String : AnyObject]
             
-            if let err = jsonError {
-                println("Error - JSON Parsing")
-                completionHandler(success: false, result: nil, error: err)
-                return
-            }else {
-                // Save the downloaded Student locations to an Array of StudentInformation Structs
-                if let resultsDictionary = parsedResult["results"] as? [[String: AnyObject]] {
-                    
-                    for result in resultsDictionary {
-                        var studentInfo = StudentInformation(studentInfoDictionary: result)
-                        self.studentLocations.append(studentInfo)
-                    }
-                    completionHandler(success: true, result: self.studentLocations.count, error: nil)
+            
+            if let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as? [String : AnyObject]{
+                if let err = jsonError {
+                    println("Error - JSON Parsing")
+                    completionHandler(success: false, result: nil, error: err)
+                    return
                 }else {
-                    println("No results Getting Student Locations")
-                    completionHandler(success: true, result: self.studentLocations.count, error: nil)
+                    // Save the downloaded Student locations to an Array of StudentInformation Structs
+                    
+                    if let resultsDictionary = parsedResult["results"] as? [[String: AnyObject]] {
+                        
+                        var studentLocations = [StudentInformation]()
+                        for result in resultsDictionary {
+                            var studentInfo = StudentInformation(studentInfoDictionary: result)
+                            self.studentLocations.append(studentInfo)
+                        }
+                        
+                        for location in OnTheMapClient.sharedInstance().studentLocations {
+                            println("date is \(location.updatedAt)")
+                            
+                        }
+                        
+                        completionHandler(success: true, result: self.studentLocations.count, error: nil)
+                    }else {
+                        println("No results Getting Student Locations")
+                        completionHandler(success: true, result: self.studentLocations.count, error: nil)
+                    }
                 }
+            }else {
+                println("No Parsed Result - Error \(jsonError))")
+                completionHandler(success: false, result: nil, error: jsonError)
             }
+            
+        
+            
+            
+//            let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as! [String : AnyObject]
+//            
+//            if let err = jsonError {
+//                println("Error - JSON Parsing")
+//                completionHandler(success: false, result: nil, error: err)
+//                return
+//            }else {
+//                // Save the downloaded Student locations to an Array of StudentInformation Structs
+//                
+//                if let resultsDictionary = parsedResult["results"] as? [[String: AnyObject]] {
+//                    
+//                    for result in resultsDictionary {
+//                        var studentInfo = StudentInformation(studentInfoDictionary: result)
+//                        self.studentLocations.append(studentInfo)
+//                    }
+//                    completionHandler(success: true, result: self.studentLocations.count, error: nil)
+//                }else {
+//                    println("No results Getting Student Locations")
+//                    completionHandler(success: true, result: self.studentLocations.count, error: nil)
+//                }
+//            }
         }
         
         task.resume()

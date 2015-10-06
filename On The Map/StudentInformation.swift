@@ -19,6 +19,7 @@ struct StudentInformation {
     var mapString: String!
     var mediaURL: String?
     var uniqueKey: String!
+    var updatedAt: String! // date string: 2015-03-09T22:07:09.593Z
     
     // User Links 
     var linkedInURL: String? = nil
@@ -33,6 +34,7 @@ struct StudentInformation {
         longitude = result["longitude"] as! CLLocationDegrees
         mapString = result["mapString"] as! String
         mediaURL = result["mediaURL"] as? String
+        updatedAt = result["updatedAt"] as! String
     }
 
 }

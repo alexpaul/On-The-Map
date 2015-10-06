@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -238,6 +238,7 @@
                         <outlet property="loginLabel" destination="5Eh-DF-VJa" id="z0d-0C-Vut"/>
                         <outlet property="passwordTextField" destination="pAG-co-buz" id="Mkr-56-FmH"/>
                         <outlet property="signUpButton" destination="4xp-QV-tJ4" id="HLz-h6-Dm8"/>
+                        <outlet property="udacityImageView" destination="5cn-Xj-4wV" id="CCy-RN-WNu"/>
                         <outlet property="usernameTextField" destination="3Sl-yc-r3y" id="QEG-dx-F0r"/>
                     </connections>
                 </viewController>

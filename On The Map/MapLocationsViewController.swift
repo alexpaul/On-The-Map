@@ -24,9 +24,7 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate, CLLocatio
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        println("viewDidLoad")
-        
+                
         // Create two (2) Button Bar Items on the Right Side of the Navigation Bar
         let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Refresh, target: self, action: "refreshButtonPressed")
         let postButton = UIBarButtonItem(image: UIImage(named: "pin"), style: UIBarButtonItemStyle.Plain, target: self, action: "postButtonPressed")
@@ -142,7 +140,7 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate, CLLocatio
         // Download the Students Locations from Parse
         OnTheMapClient.sharedInstance().getStudentLocations { (success, result, error) in
             if error != nil {
-                // TODO: Add an Alert to inform the user that Student Locations failed to Download
+                self.downloadAlertMessage()
                 println("Error downloading student locations: \(error)")
             }else {
                 if let res = result {
@@ -180,5 +178,14 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate, CLLocatio
         }
         
     }
+    
+    func downloadAlertMessage() {
+        let alertController = UIAlertController(title: "Download Error", message: "Failed to Download Student Locations", preferredStyle: UIAlertControllerStyle.Alert)
+        let alertAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
+        alertController.addAction(alertAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    
     
 }
