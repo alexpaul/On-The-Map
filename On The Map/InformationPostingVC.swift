@@ -36,14 +36,14 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
         super.viewWillAppear(animated)
         
         if let link = self.selectedLink {
-            self.mediaURLTextField.text = "http://www." + link
+            self.mediaURLTextField.text = link
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.mediaURLTextField.text = "http://www."
+        //self.mediaURLTextField.text = "http://www."
     }
     
     // MARK: IBActions
@@ -74,7 +74,7 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
     
     @IBAction func unwindToInformationPostingVC(sender: UIStoryboardSegue) {
         let browseLinksVC = sender.sourceViewController as! BrowseLinksViewController
-        self.selectedLink = browseLinksVC.selectedLink
+        self.selectedLink = browseLinksVC.urlString!
     }
     
     
@@ -212,7 +212,7 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
                     
                     OnTheMapClient.sharedInstance().updateStudentLocation(mapString, mediaURL: mediaURL, latitude: latitude, longitude: longitude, completionHandler: { (success, result, error) -> Void in
                         if error != nil {
-                            println("PUT Update Failed with error: \(error?.localizedDescription)")
+                            // PUT Update Failed with error
                             self.alertWhileModifyingStudentLocation("Updating Location", message: "\(error?.localizedDescription)")
                         }else {
                             self.alertWhileModifyingStudentLocation("Updating Location", message: "\(result)")
@@ -222,7 +222,7 @@ class InformationPostingVC: UIViewController, MKMapViewDelegate, UITextFieldDele
                     
                     OnTheMapClient.sharedInstance().postStudentLocation(mapString, mediaURL: mediaURL, latitude: latitude, longitude: longitude) { (success, result, error) in
                         if error != nil {
-                            println("POST Failed with error: \(error?.localizedDescription)")
+                            // POST Failed with error
                             self.alertWhileModifyingStudentLocation("Adding Location", message: "\(error?.localizedDescription)")
                         }else {
                             self.alertWhileModifyingStudentLocation("Adding Location", message: "\(result)")

@@ -64,7 +64,7 @@ class OnTheMapClient {
                         completionHandler(success: false, result: nil, error: "Error with Account")
                     }
                 }else {
-                    println("Error with JSON Result")
+                    // Error with JSON Result
                 }
             }
         }
@@ -107,7 +107,7 @@ class OnTheMapClient {
                         completionHandler(success: false, result: result, error: "Error with Account")
                     }
                 }else {
-                    println("Error with JSON Result")
+                    // Error with JSON Result
                 }
             }
         }
@@ -132,7 +132,7 @@ class OnTheMapClient {
         
         let task = session.dataTaskWithRequest(request) { data, response, downloadError in
             if downloadError != nil {
-                println("Error Posting Student Location")
+                // Error Posting Student Location
                 completionHandler(success: false, result: nil, error: downloadError)
                 return
             }else {
@@ -154,7 +154,7 @@ class OnTheMapClient {
         
         let task = session.dataTaskWithRequest(request) { (data, response, jsonError) in
             if jsonError != nil {
-                println("Error Getting Public User Data")
+                // Error Getting Public User Data
                 return
             }else {
                 var parsingError: NSError? = nil
@@ -168,8 +168,6 @@ class OnTheMapClient {
                 self.linkedIInURL = userDictionary["linked_in"] as? String
                 self.websiteURL = userDictionary["website_url"] as? String
                 self.imageURL = userDictionary["_image_url"] as? String
-                
-                println(parsedResult)
             }
         }
         task.resume()
@@ -196,7 +194,7 @@ class OnTheMapClient {
             
             if let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as? [String : AnyObject]{
                 if let err = jsonError {
-                    println("Error - JSON Parsing")
+                    // Error - JSON Parsing
                     completionHandler(success: false, result: nil, error: err)
                     return
                 }else {
@@ -210,46 +208,16 @@ class OnTheMapClient {
                             self.studentLocations.append(studentInfo)
                         }
                         
-                        for location in OnTheMapClient.sharedInstance().studentLocations {
-                            println("date is \(location.updatedAt)")
-                            
-                        }
-                        
                         completionHandler(success: true, result: self.studentLocations.count, error: nil)
                     }else {
-                        println("No results Getting Student Locations")
+                        // No results Getting Student Locations
                         completionHandler(success: true, result: self.studentLocations.count, error: nil)
                     }
                 }
             }else {
-                println("No Parsed Result - Error \(jsonError))")
+                // No Parsed Result - Error
                 completionHandler(success: false, result: nil, error: jsonError)
             }
-            
-        
-            
-            
-//            let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as! [String : AnyObject]
-//            
-//            if let err = jsonError {
-//                println("Error - JSON Parsing")
-//                completionHandler(success: false, result: nil, error: err)
-//                return
-//            }else {
-//                // Save the downloaded Student locations to an Array of StudentInformation Structs
-//                
-//                if let resultsDictionary = parsedResult["results"] as? [[String: AnyObject]] {
-//                    
-//                    for result in resultsDictionary {
-//                        var studentInfo = StudentInformation(studentInfoDictionary: result)
-//                        self.studentLocations.append(studentInfo)
-//                    }
-//                    completionHandler(success: true, result: self.studentLocations.count, error: nil)
-//                }else {
-//                    println("No results Getting Student Locations")
-//                    completionHandler(success: true, result: self.studentLocations.count, error: nil)
-//                }
-//            }
         }
         
         task.resume()
@@ -265,7 +233,7 @@ class OnTheMapClient {
         
         let task = session.dataTaskWithRequest(request) { (data, response, jsonError) in
             if jsonError != nil {
-                println("Error Querying Student Location")
+                // Error Querying Student Location
                 return
             }else {
                 var parsingError: NSError? = nil
@@ -283,7 +251,7 @@ class OnTheMapClient {
                         }
                     }
                 }else {
-                    println("Error Parsing Results")
+                    // Error Parsing Results
                 }
 
             }
@@ -320,7 +288,6 @@ class OnTheMapClient {
                 let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as? NSDictionary
                 completionHandler(success: true, result: parsedResult, error: nil)
             }
-            println(NSString(data: data, encoding: NSUTF8StringEncoding))
         }
         task.resume()
     }
@@ -348,7 +315,7 @@ class OnTheMapClient {
         
         let task = session.dataTaskWithRequest(request) { (data, response, jsonError) in
             if jsonError != nil {
-                println("Error logging out")
+                // Error logging out
                 return
             }else {
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))

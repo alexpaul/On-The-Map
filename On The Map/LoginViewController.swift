@@ -45,9 +45,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.passwordTextField.text = ""
         
         if let token = FBSDKAccessToken.currentAccessToken()?.tokenString {
-            println("token present")
+            // token present
         }else {
-            println("no token present")
+            // no token present
         }
     }
     
@@ -133,7 +133,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         } else {
-            println("Error locating token")
+            // Error locating token
         }
     }
     
@@ -206,14 +206,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         loginManager.logInWithReadPermissions(facebookPerrmisssions, handler: { (result: FBSDKLoginManagerLoginResult!, error: NSError!) -> Void in
             if error != nil {
                 // Process Error
-                println("Facebook Error: \(error.description)")
             }else if result.isCancelled {
                 // Handle Cancellations
-                println("Handle Cancellations")
             }else {
-                // Logged In
-                println("Logged In")
-
                 // Get Current Token and Authenticate Facebook User
                 self.getCurrentTokenAndAuthenticateFacebookUser()
             }

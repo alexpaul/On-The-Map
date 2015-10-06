@@ -8,40 +8,19 @@
 
 import UIKit
 
-class BrowseLinksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class BrowseLinksViewController: UIViewController, UITextFieldDelegate {
     
-    //var links = [String?]()
+    
+    @IBOutlet weak var webView: UIWebView!
+    @IBOutlet weak var urlTextField: UITextField!
+    
+    var urlString: String?
     var selectedLink: String? = nil
-    let usefulLinks = ["udacity.com", "apple.com", "google.com", "developer.apple.com", "techmeme.com", "linkedin.com",
-                        "github.com"]
-
-    // MARK: UITableViewDelegate Methods
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return self.links.count
-        return self.usefulLinks.count
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("LinkCell") as! UITableViewCell
-        
-//        if let link = self.links[indexPath.row] {
-//            cell.textLabel?.text = link
-//        }else {
-//            cell.textLabel?.text = "No URL Found"
-//        }
-        
-        let link = self.usefulLinks[indexPath.row]
-        cell.textLabel?.text = link
-        
-        return cell
-    }
-    
-    // MARK: UITableViewDataSource Methods
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.selectedLink = self.usefulLinks[indexPath.row]
+        self.urlTextField.text = "http://www."
     }
     
     // MARK: IBActions 
@@ -50,9 +29,19 @@ class BrowseLinksViewController: UIViewController, UITableViewDelegate, UITableV
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-//    @IBAction func done(sender: UIBarButtonItem) {
-//        
-//    }
+    // MARK: UITextField Delegate Methods
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        self.urlString = textField.text
+        
+        textField.resignFirstResponder()
+        return true
+    }
     
-
+    func textFieldDidEndEditing(textField: UITextField) {
+                
+        let url = NSURL(string: self.urlString!)
+        let request = NSURLRequest(URL: url!)
+        self.webView.loadRequest(request)
+    }
 }

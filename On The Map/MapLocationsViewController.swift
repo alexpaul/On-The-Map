@@ -51,7 +51,6 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate, CLLocatio
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        println("viewWillAppear")
     }
     
     // MARK: IBActions 
@@ -141,12 +140,12 @@ class MapLocationsViewController: UIViewController, MKMapViewDelegate, CLLocatio
         OnTheMapClient.sharedInstance().getStudentLocations { (success, result, error) in
             if error != nil {
                 self.downloadAlertMessage()
-                println("Error downloading student locations: \(error)")
+                // Error downloading student locations
             }else {
                 if let res = result {
-                    println("result: \(result!) student locations")
+                    // student locations
                 }else {
-                    println("Error retrieving student locations")
+                    // Error retrieving student locations
                 }
                 
             }

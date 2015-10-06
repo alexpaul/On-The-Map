@@ -81,13 +81,14 @@ class ListLocationsViewController: UIViewController, UITableViewDataSource, UITa
         // Download the Students Locations from Parse
         OnTheMapClient.sharedInstance().getStudentLocations { (success, result, error) in
             if error != nil {
-                // TODO: Add an Alert to inform the user that Student Locations failed to Download
-                println("Error downloading student locations: \(error)")
+                // Error downloading student locations: \(error)")
+                self.downloadAlertMessage()
             }else {
                 if let res = result {
-                    println("result: \(result!) student locations")
+                    // student locations
                 }else {
-                    println("Error retrieving student locations")
+                    // Error retrieving student locations
+                    self.downloadAlertMessage()
                 }
             }
         }
@@ -102,8 +103,13 @@ class ListLocationsViewController: UIViewController, UITableViewDataSource, UITa
             self.tableView.reloadData()
             self.activityIndicator.stopAnimating()
         }
-
-        
+    }
+    
+    func downloadAlertMessage() {
+        let alertController = UIAlertController(title: "Download Error", message: "Failed to Download Student Locations", preferredStyle: UIAlertControllerStyle.Alert)
+        let alertAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
+        alertController.addAction(alertAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 
 }

@@ -614,7 +614,7 @@
             </objects>
             <point key="canvasLocation" x="3430" y="334"/>
         </scene>
-        <!--Choose a Link-->
+        <!--Browse Links View Controller-->
         <scene sceneID="4eG-1f-H0P">
             <objects>
                 <viewController storyboardIdentifier="BrowseLinksViewController" id="mMa-Cj-2N9" customClass="BrowseLinksViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
@@ -626,43 +626,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="fFs-is-4J2">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kp3-bE-of7">
+                                <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LinkCell" id="BOX-sf-1Xq">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BOX-sf-1Xq" id="ZJT-Jr-fC1">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="mMa-Cj-2N9" id="nOd-FU-b1o"/>
-                                    <outlet property="delegate" destination="mMa-Cj-2N9" id="3ck-mD-dLm"/>
+                                    <outlet property="delegate" destination="mMa-Cj-2N9" id="gSQ-5h-PSy"/>
                                 </connections>
-                            </tableView>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="gPW-D8-u5z" firstAttribute="top" secondItem="fFs-is-4J2" secondAttribute="bottom" id="Jnd-3d-55C"/>
-                            <constraint firstItem="fFs-is-4J2" firstAttribute="top" secondItem="6uA-NE-hTJ" secondAttribute="topMargin" id="YMH-L1-EfH"/>
-                            <constraint firstItem="fFs-is-4J2" firstAttribute="leading" secondItem="6uA-NE-hTJ" secondAttribute="leadingMargin" constant="-16" id="gPw-Ku-2zu"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="fFs-is-4J2" secondAttribute="trailing" constant="-16" id="llW-3a-fgA"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="kp3-bE-of7" secondAttribute="trailing" constant="-16" id="FK9-hF-6BI"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="kp3-bE-of7" secondAttribute="bottom" constant="-64" id="JHe-F8-zhW"/>
+                            <constraint firstItem="kp3-bE-of7" firstAttribute="top" secondItem="1pf-6X-AHb" secondAttribute="bottom" id="T87-7u-hfm"/>
+                            <constraint firstItem="kp3-bE-of7" firstAttribute="leading" secondItem="6uA-NE-hTJ" secondAttribute="leadingMargin" constant="-16" id="za4-Jj-EhT"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Choose a Link" id="lou-5z-5zF">
+                    <navigationItem key="navigationItem" id="lou-5z-5zF">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ebz-ET-rJE">
                             <connections>
                                 <action selector="cancelButtonPressed:" destination="mMa-Cj-2N9" id="6bh-MO-yhh"/>
                             </connections>
                         </barButtonItem>
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a URL" textAlignment="center" minimumFontSize="17" id="93Q-ob-xDr">
+                            <rect key="frame" x="140" y="7" width="320" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="go"/>
+                            <connections>
+                                <outlet property="delegate" destination="mMa-Cj-2N9" id="VH7-iQ-PyN"/>
+                            </connections>
+                        </textField>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="qEO-zU-NB0">
                             <connections>
+                                <action selector="doneButtonPressed:" destination="mMa-Cj-2N9" id="X9O-v9-eho"/>
                                 <segue destination="eBU-0t-c9A" kind="unwind" unwindAction="unwindToInformationPostingVC:" id="51x-5D-0F5"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="urlTextField" destination="93Q-ob-xDr" id="LW3-HD-Dqy"/>
+                        <outlet property="webView" destination="kp3-bE-of7" id="t31-x6-BfC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UVv-wy-7EI" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="eBU-0t-c9A" userLabel="Exit" sceneMemberID="exit"/>
